@@ -354,7 +354,7 @@ codeblock:
   # Code Highlight theme
   # Available values: normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
   # See: https://github.com/chriskempson/tomorrow-theme
-  highlight_theme: normal
+  highlight_theme: night eighties
   # Add copy button on codeblock
   copy_button:
     enable: false
@@ -995,3 +995,7 @@ vendors:
 css: css
 js: js
 images: images
+# 「阅读全文」自动形成摘要
+auto_excerpt:
+  enable: true
+  length: 150
