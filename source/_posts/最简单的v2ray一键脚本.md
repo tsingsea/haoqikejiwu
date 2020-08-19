@@ -1,6 +1,6 @@
 ---
 title: 最简单的v2ray一键脚本
-date: 2019-08-09 08:43:10
+date: 2019-08-11 08:43:10
 customizeurl: v2ray-233boy-sh
 categories:
 - [科学上网, v2ray]

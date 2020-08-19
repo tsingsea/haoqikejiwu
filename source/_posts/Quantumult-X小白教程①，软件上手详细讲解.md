@@ -1,6 +1,6 @@
 ---
 title: Quantumult-X小白教程①，软件上手详细讲解
-date: 2020-03-09 15:34:56
+date: 2019-11-09 15:34:56
 customizeurl: quantumultx-use-mind
 categories:
 - [iOS, Quantumult X]

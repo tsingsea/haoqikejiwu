@@ -1,6 +1,6 @@
 ---
 title: SSTap真全局游戏代理软件使用教程
-date: 2019-11-01 08:36:11
+date: 2020-07-14 08:36:11
 customizeurl: sstap-global-game-proxy
 categories:
 - [科学上网, SSTap]

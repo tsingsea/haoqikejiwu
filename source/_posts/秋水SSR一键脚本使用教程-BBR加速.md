@@ -1,6 +1,6 @@
 ---
 title: 秋水SSR一键脚本使用教程+BBR加速
-date: 2019-08-09 12:33:55
+date: 2019-07-01 12:33:55
 customizeurl: shadowsocksr-qiushui-sh
 categories:
 - [科学上网, shadowsocksr]

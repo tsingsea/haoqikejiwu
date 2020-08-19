@@ -1,6 +1,6 @@
 ---
 title: Quantumult X教程②，1.0.8+版本更新远程托管与iCloud配置同步
-date: 2020-03-09 15:34:56
+date: 2019-11-22 15:34:56
 customizeurl: quantumultx-remote-icloud
 categories:
 - [iOS, Quantumult X]

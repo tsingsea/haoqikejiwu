@@ -1,6 +1,6 @@
 ---
 title: Ubuntu部署Shadowsocks-libev及simple-obfs
-date: 2019-09-08 12:47:04
+date: 2019-09-11 12:47:04
 customizeurl: shadowsocks-libev-simple-obfs-ubuntu
 categories:
 - [科学上网, shadowsocks]

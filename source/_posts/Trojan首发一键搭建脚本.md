@@ -1,6 +1,6 @@
 ---
 title: Trojan首发一键搭建脚本
-date: 2019-10-09 09:22:27
+date: 2019-09-30 09:22:27
 customizeurl: trojan-install-sh
 categories:
 - [科学上网, Trojan]
