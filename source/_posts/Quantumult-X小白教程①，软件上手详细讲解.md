@@ -36,11 +36,11 @@ App图标【还是挺酷】
 
 首次打开界面简单认识
 
-<img src="/images/147035548.png" width="200" height="200">
+<img src="/images/147035548.png" style="zoom:50%;">
 
 主要操作界面简单认识
 
-<img src="/images/147035549.png" height="200" width="200">
+<img src="/images/147035549.png" style="zoom:50%;">
 
 ## 使用教程：
 
