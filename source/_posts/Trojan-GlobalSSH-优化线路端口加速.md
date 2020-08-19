@@ -14,9 +14,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 谷歌云搭建Trojan科学上网，使用GlobalSSH端口加速，优化Trojan科学上网端口速度
 keywords: Trojan,一键脚本,GCP,Global SSH,Ucloud
+description: 谷歌云搭建Trojan科学上网，使用GlobalSSH端口加速，优化Trojan科学上网端口速度
 ---
 
 Trojan+GlobalSSH+域名解析[Cloudflare]，延迟低稳定

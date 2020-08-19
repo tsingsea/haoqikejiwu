@@ -12,9 +12,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 使用秋水大神的一键脚本进行ssr的安装
 keywords: shadowsocksr,一键脚本,秋水SSR,BBR
+description: 使用秋水大神的一键脚本进行ssr的安装
 ---
 
 ## 获得root权限

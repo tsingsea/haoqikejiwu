@@ -14,9 +14,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 使用免费300额度的谷歌云搭建v2ray科学上网，最简单的搭建v2ray的一键脚本
 keywords: v2ray,一键脚本,233boy脚本
+description: 使用免费300额度的谷歌云搭建v2ray科学上网，最简单的搭建v2ray的一键脚本
 ---
 
 ### [视频教程](https://www.youtube.com/watch?v=aoMiqynu3fU)

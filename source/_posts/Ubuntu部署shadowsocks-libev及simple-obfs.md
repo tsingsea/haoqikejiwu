@@ -14,9 +14,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: Ubuntu部署Shadowsocks-libev及simple-obfs，纯手动搭建shadowsocks-libev服务端，安全；轻量；高速；方案成熟，全平台客户端支持。
 keywords: shadowsocks,Linux,simple-obfs,加密混淆
+description: Ubuntu部署Shadowsocks-libev及simple-obfs，纯手动搭建shadowsocks-libev服务端，安全；轻量；高速；方案成熟，全平台客户端支持。
 ---
 
 ## 更新源和更新软件

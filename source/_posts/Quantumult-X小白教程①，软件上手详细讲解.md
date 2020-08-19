@@ -13,9 +13,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 
 keywords: Quantumult X,iOS,配置文件,Quantumult
+description: Quantumult X和Quantumult为同一开发者，Quantumult X能用js脚本，但整体使用复杂。
 ---
 
 ## 软件简介：

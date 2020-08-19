@@ -13,9 +13,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 
 keywords: Quantumult X,iOS,配置文件,remote,icloud
+description: Quantumult X远程托管，同步更新到iCloud，同apple id设备也同步更新。
 ---
 
 ## 远程托管

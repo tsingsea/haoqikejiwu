@@ -13,9 +13,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 
 keywords: Loon,iOS,配置文件,Global
+description: Loon配置文件详细教程
 ---
 
 成文不易，此文没有[官方](https://www.notion.so/Loon-f0a98c39f5224c09b281c79837380431)详细，但改动都清晰可见，按照顺序很容易理解，对小白极其友好！

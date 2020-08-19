@@ -14,9 +14,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 使用免费300额度的谷歌云搭建Trojan科学上网，本脚本应该算是Trojan首发一键脚本
 keywords: Trojan,一键脚本,GCP,谷歌云实例
+description: 使用免费300额度的谷歌云搭建Trojan科学上网，本脚本应该算是Trojan首发一键脚本
 ---
 
 ## 谷歌云搭建Trojan科学上网

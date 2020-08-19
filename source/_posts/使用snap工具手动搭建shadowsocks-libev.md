@@ -14,9 +14,8 @@ cover: true
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 使用snap工具手动搭建shadowsocks-libev服务端，安全；轻量；高速；方案成熟，全平台客户端支持。
 keywords: shadowsocks,Linux,snap工具
+description: 使用snap工具手动搭建shadowsocks-libev服务端，安全；轻量；高速；方案成熟，全平台客户端支持。
 ---
 ## 前言
 

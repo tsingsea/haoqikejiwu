@@ -13,9 +13,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 
 keywords: Quantumult X,iOS,配置文件,TikTok,国际版抖音
+description: iOS使用解锁TikTok（国际版）区域限制
 ---
 
 iOS 使用解锁 TikTok （国际版）区域限制【Quantumult X 篇】

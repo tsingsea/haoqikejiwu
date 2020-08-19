@@ -14,9 +14,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: CentOS7+系统纯原生搭建Python版shadowsocks实现科学上网，纯手动搭建shadowsocks-python服务端，安全；轻量；高速；方案成熟，全平台客户端支持。
 keywords: shadowsocks,CentOS,一键脚本,秋水SSR,Python
+description: CentOS7+系统纯原生搭建Python版shadowsocks实现科学上网，纯手动搭建shadowsocks-python服务端，安全；轻量；高速；方案成熟，全平台客户端支持。
 ---
 
 ### Shadowsocks纯原生搭建，整理不易，还望珍惜。

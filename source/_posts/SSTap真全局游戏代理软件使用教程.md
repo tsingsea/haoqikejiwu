@@ -14,9 +14,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: SSTap真全局游戏代理软件使用教程
 keywords: SSTap,游戏代理,虚拟网卡,Global,SocksCap64
+description: SSTap-享受游戏! 专为游戏而生！利用虚拟网卡技术在网络层实现的代理工具。
 ---
 
 ## SSTap简介

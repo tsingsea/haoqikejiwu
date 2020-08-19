@@ -12,9 +12,8 @@ cover: false
 coverImg: 
 password: 
 toc: true
-mathjax: false
-summary: 使用秋水大神的一键脚本进行ssr的安装，添加caddy+tls+443端口伪装，保证ssr应有速度的同时增加安全性。
 keywords: shadowsocksr,一键脚本,秋水SSR,Caddy,tls加密
+description: 使用秋水大神的一键脚本进行ssr的安装，添加caddy+tls+443端口伪装，保证ssr应有速度的同时增加安全性。
 ---
 
 ## 一，准备工作
