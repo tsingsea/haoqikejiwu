@@ -236,11 +236,6 @@ chat:
 # Automatically excerpt description in homepage as preamble text.
 excerpt_description: true
 
-# 「阅读全文」自动形成摘要
-auto_excerpt:
-  enable: true
-  length: 150
-  
 # Read more button
 # If true, the read more button will be displayed in excerpt section.
 read_more_btn: true
@@ -519,7 +514,7 @@ math:
 
 # Easily enable fast Ajax navigation on your website.
 # Dependencies: https://github.com/theme-next/theme-next-pjax
-pjax: true
+pjax: false
 
 # FancyBox is a tool that offers a nice and elegant way to add zooming functionality for images.
 # For more information: https://fancyapps.com/fancybox
