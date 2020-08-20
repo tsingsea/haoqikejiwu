@@ -17,6 +17,10 @@ description: " "
 2. 非大陆地区AppleID并已下载TikTok
 3. 观看TikTok流量经过代理
 
+## 视频教程
+
+{% youtube 68pHg6fgv84 %}
+
 ## 详细教程
 
 ### 证书安装
