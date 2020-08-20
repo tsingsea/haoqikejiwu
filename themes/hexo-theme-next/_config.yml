@@ -268,8 +268,8 @@ reward_settings:
   #comment: Donate comment here.
 
 reward:
-  wechatpay: /reward/wechatpay.png
-  alipay: /reward/alipay.png
+  wechatpay: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/reward/wechatpay.png
+  alipay: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/reward/alipay.png
   #paypal: /images/paypal.png
   #bitcoin: /images/bitcoin.png
 
