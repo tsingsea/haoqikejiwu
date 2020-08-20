@@ -994,6 +994,6 @@ vendors:
   canvas_ribbon:
 
 # Assets
-css: css
-js: js
-images: images
+css: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/css
+js: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/js
+images: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images
