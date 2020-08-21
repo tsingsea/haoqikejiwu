@@ -1,5 +1,5 @@
 ---
-title: v2ray官方教程过程全透明手动搭建v2ray(kcp)+shadowsocks(原生)双节点
+title: v2ray官方教程手动搭建v2ray(kcp)+shadowsocks(原生)双节点
 date: 2020-08-21 09:01:55
 customizeurl: v2core-v2ray-shadowsocks
 categories:
