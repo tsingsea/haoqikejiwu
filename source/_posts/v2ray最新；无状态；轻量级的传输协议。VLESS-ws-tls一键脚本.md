@@ -1,5 +1,5 @@
 ---
-title: v2ray最新；无状态；轻量级的传输协议。VLESS+ws+tls一键脚本
+title: v2ray最新、无状态、轻量级的传输协议。VLESS+ws+tls一键脚本
 date: 2020-08-25 19:02:49
 customizeurl: v2fly-vless+ws+tls
 categories:
@@ -10,7 +10,7 @@ tags:
 - v2ray
 - v2fly
 - 一键脚本
-description: 继v2ray官方脚本转型v2fly，VLESS+ws+tls一键安装脚本！VLESS协议！v2ray最新；无状态；轻量级的传输协议。v2Ray客户端和服务器之间的桥梁协议。
+description: 继v2ray官方脚本转型v2fly，VLESS+ws+tls一键安装脚本！VLESS协议！v2ray最新、无状态、轻量级的传输协议。v2Ray客户端和服务器之间的桥梁协议。
 ---
 
 ## 前言
@@ -49,19 +49,19 @@ description: 继v2ray官方脚本转型v2fly，VLESS+ws+tls一键安装脚本！
 
 ### 图形客户端
 
-#### [V2RayNG](https://www.v2rayssr.com/go?url=https://github.com/2dust/v2rayNG) ![img](https://img.shields.io/github/commit-activity/m/2dust/v2rayNG?color=informational&label=commits&style=social) ![img](https://img.shields.io/github/stars/2dust/v2rayNG?style=social)
+#### [V2RayNG](https://github.com/2dust/v2rayNG)
 
 - V2RayNG 是一个基于 V2Ray 内核的 Android 应用，它可以创建基于 VMess 的 VPN 连接。
 
-#### [V2rayN](https://www.v2rayssr.com/go?url=https://github.com/2dust/v2rayN) ![img](https://img.shields.io/github/commit-activity/m/2dust/v2rayN?color=informational&label=commits&style=social) ![img](https://img.shields.io/github/stars/2dust/v2rayN?style=social)
+#### [V2rayN](https://github.com/2dust/v2rayN)
 
 - V2RayN 是一个基于 V2Ray 内核的 Windows 客户端。
 
-#### [V2rayU](https://www.v2rayssr.com/go?url=https://github.com/yanue/V2rayU) ![img](https://img.shields.io/github/commit-activity/m/yanue/V2rayU?color=informational&label=commits&style=social) ![img](https://img.shields.io/github/stars/yanue/V2rayU?style=social)
+#### [V2rayU](https://github.com/yanue/V2rayU)
 
 - V2rayU，基于 V2Ray 核心的 macOS 客户端，使用 Swift 4.2 编写，支持 VMess、Shadowsocks、SOCKS5 等服务协议，支持订阅，支持二维码、剪贴板导入、手动配置、二维码分享等。
 
-#### [Qv2ray](https://www.v2rayssr.com/go?url=https://github.com/Qv2ray/Qv2ray) ![img](https://img.shields.io/github/commit-activity/m/Qv2ray/Qv2ray?color=informational&label=commits&style=social) ![img](https://img.shields.io/github/stars/Qv2ray/Qv2ray?style=social)
+#### [Qv2ray](https://github.com/Qv2ray/Qv2ray) 
 
 - 跨平台 V2Ray 客户端，支持 Linux、Windows、macOS，可通过插件系统支持 SSR / Trojan / Trojan-Go / NaiveProxy 等协议，不支持批量测速，不支持自动更新，不建议小白使用
 
@@ -69,7 +69,6 @@ description: 继v2ray官方脚本转型v2fly，VLESS+ws+tls一键安装脚本！
 
 （截止到2020年8月15日）
 
-#### [PassWall](https://www.v2rayssr.com/go?url=https://github.com/xiaorouji/openwrt-package)
+#### [PassWall](https://github.com/xiaorouji/openwrt-package)
 
 - PassWall（v3.9.35+），支持 OpenWRT
-
