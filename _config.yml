@@ -108,19 +108,6 @@ symbols_count_time:
   
 # Extensions
 ## Plugins: https://hexo.io/plugins/
-hexo_external_link:
-  enable: true
-  enable_base64_encode: true
-  url_param_name: 'u'
-  html_file_name: 'go.html'
-  target_blank: true
-  link_rel: 'external nofollow noopener noreferrer'
-  domain: 'www.seaseax.com' # 如果开启了防盗链
-  safety_chain: true
-  ignore_attrs: 
-    - 'data-fancybox'
-    - 'ignore-external-link'
-
 ## Themes: https://hexo.io/themes/
 theme: hexo-theme-next
 
