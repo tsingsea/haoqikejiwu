@@ -49,15 +49,15 @@ description: 继v2ray官方脚本转型v2fly，VLESS+ws+tls一键安装脚本！
 
 ### 图形客户端
 
-#### [V2RayNG](https://github.com/2dust/v2rayNG)
+#### [v2RayNG](https://github.com/2dust/v2rayNG)
 
 - V2RayNG 是一个基于 V2Ray 内核的 Android 应用，它可以创建基于 VMess 的 VPN 连接。
 
-#### [V2rayN](https://github.com/2dust/v2rayN)
+#### [v2rayN](https://github.com/2dust/v2rayN)
 
 - V2RayN 是一个基于 V2Ray 内核的 Windows 客户端。
 
-#### [V2rayU](https://github.com/yanue/V2rayU)
+#### [v2rayU](https://github.com/yanue/V2rayU)
 
 - V2rayU，基于 V2Ray 核心的 macOS 客户端，使用 Swift 4.2 编写，支持 VMess、Shadowsocks、SOCKS5 等服务协议，支持订阅，支持二维码、剪贴板导入、手动配置、二维码分享等。
 
