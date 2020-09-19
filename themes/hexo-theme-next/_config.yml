@@ -40,10 +40,10 @@ custom_file_path:
 # ---------------------------------------------------------------
 
 favicon:
-  small: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/favicon-16x16-next.png
-  medium: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/favicon-32x32-next.png
-  apple_touch_icon: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/apple-touch-icon-next.png
-  safari_pinned_tab: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/logo.svg
+  small: //cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/favicon-16x16-next.png
+  medium: //cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/favicon-32x32-next.png
+  apple_touch_icon: //cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/apple-touch-icon-next.png
+  safari_pinned_tab: //cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/logo.svg
   #android_manifest: /images/manifest.json
   #ms_browserconfig: /images/browserconfig.xml
 
@@ -163,7 +163,7 @@ sidebar:
 # Sidebar Avatar
 avatar:
   # Replace the default image and set the url here.
-  url: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/avatar.gif
+  url: //cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/avatar.gif
   # If true, the avatar will be dispalyed in circle.
   rounded: true
   # If true, the avatar will be rotated with the cursor.
@@ -269,8 +269,8 @@ reward_settings:
   #comment: Donate comment here.
 
 reward:
-  wechatpay: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/reward/wechatpay.png
-  alipay: https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/reward/alipay.png
+  wechatpay: //cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/reward/wechatpay.png
+  alipay: //cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/reward/alipay.png
   #paypal: /images/paypal.png
   #bitcoin: /images/bitcoin.png
 
@@ -714,12 +714,12 @@ firestore:
 # Show Views / Visitors of the website / page with busuanzi.
 # Get more information on http://ibruce.info/2015/04/04/busuanzi
 busuanzi_count:
-  enable: true
-  total_visitors: true
+  enable: false
+  total_visitors: false
   total_visitors_icon: fa fa-user
-  total_views: true
+  total_views: false
   total_views_icon: fa fa-eye
-  post_views: true
+  post_views: false
   post_views_icon: fa fa-eye
 
 
@@ -930,11 +930,11 @@ vendors:
   # Pangu
   # pangu: //cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js
   # pangu: //cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js
-  pangu: //cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js
+  pangu:
 
   # Quicklink
   # quicklink: //cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js
-  quicklink: //cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js
+  quicklink:
 
   # DisqusJS
   # disqusjs_js: //cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js

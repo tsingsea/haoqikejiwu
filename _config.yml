@@ -6,14 +6,14 @@
 title: 国际小站-好奇科技坞
 subtitle: ''
 description: ''
-keywords: ss,ssr,v2ray,Trojan,shadowsocks,shadowsocksrr,v2fly,教程
+keywords: shadowsocks,ss,ssr,v2ray,Trojan,shadowsocksrr,v2fly,教程
 author: 好奇Curious
 language: en
-timezone: America/New_York
+timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://www.seaseax.com
+url: https://www.seaseax.com
 root: /
 permalink: :customizeurl.html
 permalink_defaults:
