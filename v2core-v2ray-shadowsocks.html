@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="//cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="//cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="//cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="//cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-loading-bar.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.seaseax.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="因v2ray原官方脚本已被v2fly接管，原官方脚本不在使用，新脚本复杂不友好，故按照原官方脚本整理出此教程，代码透明无后门。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="v2ray官方教程手动搭建v2ray(kcp)+shadowsocks(原生)双节点">
+<meta property="og:url" content="https://www.seaseax.com/v2core-v2ray-shadowsocks.html">
+<meta property="og:site_name" content="国际小站-好奇科技坞">
+<meta property="og:description" content="因v2ray原官方脚本已被v2fly接管，原官方脚本不在使用，新脚本复杂不友好，故按照原官方脚本整理出此教程，代码透明无后门。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-21T01:01:55.000Z">
+<meta property="article:modified_time" content="2020-09-19T14:54:07.846Z">
+<meta property="article:author" content="好奇Curious">
+<meta property="article:tag" content="shadowsocks">
+<meta property="article:tag" content="v2ray">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.seaseax.com/v2core-v2ray-shadowsocks.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>v2ray官方教程手动搭建v2ray(kcp)+shadowsocks(原生)双节点 | 国际小站-好奇科技坞</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167952112-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-167952112-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">国际小站-好奇科技坞</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://www.seaseax.com/v2core-v2ray-shadowsocks.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="//cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/avatar.gif">
+      <meta itemprop="name" content="好奇Curious">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="国际小站-好奇科技坞">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          v2ray官方教程手动搭建v2ray(kcp)+shadowsocks(原生)双节点
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-21 09:01:55" itemprop="dateCreated datePublished" datetime="2020-08-21T09:01:55+08:00">2020-08-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-19 22:54:07" itemprop="dateModified" datetime="2020-09-19T22:54:07+08:00">2020-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/shadowsocks/" itemprop="url" rel="index"><span itemprop="name">shadowsocks</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/v2ray/" itemprop="url" rel="index"><span itemprop="name">v2ray</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+            <div class="post-description">因v2ray原官方脚本已被v2fly接管，原官方脚本不在使用，新脚本复杂不友好，故按照原官方脚本整理出此教程，代码透明无后门。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>支持系统不限，最好使用<code>CentOS</code>；<code>Debian</code>；<code>Ubuntu</code>常见发行版</li>
+<li>请提前开放你所需要用的端口</li>
+<li>涉及到的命令出现未安装情况，自行安装</li>
+</ol>
+<h2 id="详细教程"><a href="#详细教程" class="headerlink" title="详细教程"></a>详细教程</h2><h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;v2ray&#x2F;v2ray-core&#x2F;releases&#x2F;download&#x2F;v4.27.0&#x2F;v2ray-linux-64.zip   &#x2F;&#x2F;下载v2ray最新发行包，可自行替换版本号</span><br><span class="line"></span><br><span class="line">unzip v2ray-linux-64.zip   &#x2F;&#x2F;解压</span><br><span class="line"></span><br><span class="line">cd v2ray-linux-64   &#x2F;&#x2F;根据解压目录的具体情况决定是否运行本命令</span><br><span class="line"></span><br><span class="line">ls -l   &#x2F;&#x2F;列出解压后所有文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h3><p>因为<del><code>bash &lt;(curl -L -s https://install.direct/go.sh)</code></del>脚本会自动安装以下文件：</p>
+<ul>
+<li><code>/usr/bin/v2ray/v2ray</code>：V2Ray 程序</li>
+<li><code>/usr/bin/v2ray/v2ctl</code>：V2Ray 工具</li>
+<li><code>/usr/bin/v2ray/geoip.dat</code>：IP 数据文件</li>
+<li><code>/usr/bin/v2ray/geosite.dat</code>：域名数据文件</li>
+<li><code>/etc/v2ray/config.json</code>：配置文件</li>
+</ul>
+<p>于是现在要做的就是手动将文件移动至相应位置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;usr&#x2F;bin&#x2F;v2ray   &#x2F;&#x2F;在&#x2F;usr&#x2F;bin目录下创建v2ray文件夹</span><br><span class="line">cp v2ray &#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;v2ray</span><br><span class="line">cp v2ctl &#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;v2ctl</span><br><span class="line">cp geoip.dat &#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;geoip.dat</span><br><span class="line">cp geosite.dat &#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;geosite.dat</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>无配置不成”方圆”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;etc&#x2F;v2ray   &#x2F;&#x2F;在&#x2F;etc目录下创建v2ray文件夹</span><br><span class="line">nano &#x2F;etc&#x2F;v2ray&#x2F;config.json</span><br></pre></td></tr></table></figure>
+
+<p>v2ray(kcp)+shadowsocks(原生)配置文件模板</p>
+<p>模板解释：</p>
+<ul>
+<li>v2ray mKCP协议</li>
+<li>alterID=32</li>
+<li>v2ray 默认端口：46231且动态端口范围40000-50000</li>
+<li>默认uuid：0084dfc8-507e-715a-e797-15fa69d84321</li>
+<li>ss 默认端口：443</li>
+<li>加密方式：chacha20-ietf-poly1305</li>
+<li>默认密码：shadowsocks</li>
+<li>udp开启</li>
+</ul>
+<p>可直接替换：</p>
+<ul>
+<li>端口号</li>
+<li>alterID</li>
+<li>UUID</li>
+<li>加密方式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;log&quot;: &#123;</span><br><span class="line">        &quot;access&quot;: &quot;&#x2F;var&#x2F;log&#x2F;v2ray&#x2F;access.log&quot;,</span><br><span class="line">        &quot;error&quot;: &quot;&#x2F;var&#x2F;log&#x2F;v2ray&#x2F;error.log&quot;,</span><br><span class="line">        &quot;loglevel&quot;: &quot;warning&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;inbound&quot;: &#123;</span><br><span class="line">        &quot;port&quot;: 46231,</span><br><span class="line">        &quot;protocol&quot;: &quot;vmess&quot;,</span><br><span class="line">        &quot;settings&quot;: &#123;</span><br><span class="line">            &quot;clients&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;id&quot;: &quot;0084dfc8-507e-715a-e797-15fa69d84321&quot;,</span><br><span class="line">                    &quot;level&quot;: 1,</span><br><span class="line">                    &quot;alterId&quot;: 32</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;streamSettings&quot;: &#123;</span><br><span class="line">            &quot;network&quot;: &quot;kcp&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;detour&quot;: &#123;</span><br><span class="line">            &quot;to&quot;: &quot;vmess-detour-151377&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;outbound&quot;: &#123;</span><br><span class="line">        &quot;protocol&quot;: &quot;freedom&quot;,</span><br><span class="line">        &quot;settings&quot;: &#123;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;inboundDetour&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;protocol&quot;: &quot;vmess&quot;,</span><br><span class="line">            &quot;port&quot;: &quot;40000-50000&quot;,</span><br><span class="line">            &quot;tag&quot;: &quot;vmess-detour-151377&quot;,</span><br><span class="line">            &quot;settings&quot;: &#123;&#125;,</span><br><span class="line">            &quot;allocate&quot;: &#123;</span><br><span class="line">                &quot;strategy&quot;: &quot;random&quot;,</span><br><span class="line">                &quot;concurrency&quot;: 5,</span><br><span class="line">                &quot;refresh&quot;: 5</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;streamSettings&quot;: &#123;</span><br><span class="line">                &quot;network&quot;: &quot;kcp&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;protocol&quot;: &quot;shadowsocks&quot;,</span><br><span class="line">            &quot;port&quot;: 443,</span><br><span class="line">            &quot;settings&quot;: &#123;</span><br><span class="line">                &quot;method&quot;: &quot;chacha20-ietf-poly1305&quot;,</span><br><span class="line">                &quot;password&quot;: &quot;shadowsocks&quot;,</span><br><span class="line">                &quot;udp&quot;: true,</span><br><span class="line">                &quot;level&quot;: 1</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;outboundDetour&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;protocol&quot;: &quot;blackhole&quot;,</span><br><span class="line">            &quot;settings&quot;: &#123;&#125;,</span><br><span class="line">            &quot;tag&quot;: &quot;blocked&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;routing&quot;: &#123;</span><br><span class="line">        &quot;strategy&quot;: &quot;rules&quot;,</span><br><span class="line">        &quot;settings&quot;: &#123;</span><br><span class="line">            &quot;rules&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;field&quot;,</span><br><span class="line">                    &quot;ip&quot;: [</span><br><span class="line">                        &quot;0.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;10.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;100.64.0.0&#x2F;10&quot;,</span><br><span class="line">                        &quot;127.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;169.254.0.0&#x2F;16&quot;,</span><br><span class="line">                        &quot;172.16.0.0&#x2F;12&quot;,</span><br><span class="line">                        &quot;192.0.0.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;192.0.2.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;192.168.0.0&#x2F;16&quot;,</span><br><span class="line">                        &quot;198.18.0.0&#x2F;15&quot;,</span><br><span class="line">                        &quot;198.51.100.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;203.0.113.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;::1&#x2F;128&quot;,</span><br><span class="line">                        &quot;fc00::&#x2F;7&quot;,</span><br><span class="line">                        &quot;fe80::&#x2F;10&quot;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;outboundTag&quot;: &quot;blocked&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="v2ray服务主程序"><a href="#v2ray服务主程序" class="headerlink" title="v2ray服务主程序"></a>v2ray服务主程序</h3><p>将v2ray.service文件移动到/usr/lib/systemd/system目录,生成V2Ray服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system   &#x2F;&#x2F;在&#x2F;usr&#x2F;lib&#x2F;systemd目录下创建system文件夹</span><br><span class="line">cp .&#x2F;systemd&#x2F;v2ray.service &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system</span><br></pre></td></tr></table></figure>
+
+<h3 id="日志文件"><a href="#日志文件" class="headerlink" title="日志文件"></a>日志文件</h3><p>手动创建一些文件,用于V2Ray程序运行时使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;var&#x2F;log&#x2F;v2ray   &#x2F;&#x2F;在&#x2F;var&#x2F;log目录下创建v2ray文件夹</span><br><span class="line">touch &#x2F;var&#x2F;log&#x2F;v2ray&#x2F;access.log</span><br><span class="line">touch &#x2F;var&#x2F;log&#x2F;v2ray&#x2F;error.log</span><br><span class="line">touch &#x2F;var&#x2F;run&#x2F;v2ray.pid</span><br></pre></td></tr></table></figure>
+
+<h3 id="随系统自启"><a href="#随系统自启" class="headerlink" title="随系统自启"></a>随系统自启</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable v2ray</span><br></pre></td></tr></table></figure>
+
+<h3 id="管理命令"><a href="#管理命令" class="headerlink" title="管理命令"></a>管理命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start v2ray</span><br><span class="line">systemctl stop v2ray</span><br><span class="line">systemctl status v2ray</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="//cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/reward/wechatpay.png" alt="好奇Curious WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="//cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/reward/alipay.png" alt="好奇Curious Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/shadowsocks/" rel="tag"># shadowsocks</a>
+              <a href="/tags/v2ray/" rel="tag"># v2ray</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/shadowrocket-unlock-tiktok.html" rel="prev" title="Shadowrocket解锁TikTok区域限制-免拔卡">
+      <i class="fa fa-chevron-left"></i> Shadowrocket解锁TikTok区域限制-免拔卡
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/v2fly-vless+ws+tls.html" rel="next" title="v2ray最新、无状态、轻量级的传输协议。VLESS+ws+tls一键脚本">
+      v2ray最新、无状态、轻量级的传输协议。VLESS+ws+tls一键脚本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">详细教程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="nav-number">2.1.</span> <span class="nav-text">第一步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">移动文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#v2ray%E6%9C%8D%E5%8A%A1%E4%B8%BB%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.4.</span> <span class="nav-text">v2ray服务主程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-number">2.5.</span> <span class="nav-text">日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%90%AF"><span class="nav-number">2.6.</span> <span class="nav-text">随系统自启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4"><span class="nav-number">2.7.</span> <span class="nav-text">管理命令</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="好奇Curious"
+      src="//cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">好奇Curious</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cueW91dHViZS5jb20vY2hhbm5lbC9VQ1M2UU0ybjk2cVhtcVVSTmlrZjNjZUE/c3ViX2NvbmZpcm1hdGlvbj0x" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCS6QM2n96qXmqURNikf3ceA?sub_confirmation&#x3D;1"><i class="fab fa-youtube fa-fw"></i>YouTube</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cudHNpbmdzZWEuY29t" title="听海的博客 → https:&#x2F;&#x2F;www.tsingsea.com"><i class="fab fa-stack-overflow fa-fw"></i>听海的博客</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90Lm1lL0hRS0pX" title="Telegran → https:&#x2F;&#x2F;t.me&#x2F;HQKJW"><i class="fab fa-telegram fa-fw"></i>Telegran</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cDovL3d3dy56aGlodS5jb20vcGVvcGxlL3RzaW5nc2Vh" title="知乎 → http:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;tsingsea"><i class="fab fa-zhihu fa-fw"></i>知乎</span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">TSingSea.com</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">30k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">27 mins.</span>
+</div>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/js/utils.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/js/motion.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/js/schemes/pisces.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/ssooenftzero/haoqikejiwu@gh-pages/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://www.seaseax.com/v2core-v2ray-shadowsocks.html',]
+      });
+      });
+  </script>
+
+    </div>
+</body>
+</html>

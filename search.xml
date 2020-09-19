@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>CentOS系统纯原生搭建Python版shadowsocks实现科学上网</title>
+    <url>/shadowsocks-python-centos.html</url>
+    <content><![CDATA[<h3 id="Shadowsocks纯原生搭建，整理不易，还望珍惜。"><a href="#Shadowsocks纯原生搭建，整理不易，还望珍惜。" class="headerlink" title="Shadowsocks纯原生搭建，整理不易，还望珍惜。"></a>Shadowsocks纯原生搭建，整理不易，还望珍惜。</h3><h4 id="安装环境：CentOS7"><a href="#安装环境：CentOS7" class="headerlink" title="安装环境：CentOS7+"></a>安装环境：CentOS7+</h4><h4 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h4><h4 id="1-更新-amp-升级系统"><a href="#1-更新-amp-升级系统" class="headerlink" title="1.更新&amp;升级系统"></a>1.更新&amp;升级系统</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum update</span><br><span class="line">yum upgrade</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-官网参考代码安装pip-pip-是-Python-包管理工具，该工具提供了对Python包的查找、下载、安装、卸载的功能。"><a href="#2-官网参考代码安装pip-pip-是-Python-包管理工具，该工具提供了对Python包的查找、下载、安装、卸载的功能。" class="headerlink" title="2.官网参考代码安装pip[pip 是 Python 包管理工具，该工具提供了对Python包的查找、下载、安装、卸载的功能。]"></a>2.<span class="exturl" data-url="aHR0cHM6Ly9waXAucHlwYS5pby9lbi9zdGFibGUvaW5zdGFsbGluZy8=">官网参考代码<i class="fa fa-external-link-alt"></i></span>安装pip[pip 是 Python 包管理工具，该工具提供了对Python包的查找、下载、安装、卸载的功能。]</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip --version  &#x2F;&#x2F;检验是否安装pip及版本</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https:&#x2F;&#x2F;bootstrap.pypa.io&#x2F;get-pip.py -o get-pip.py  &#x2F;&#x2F;下载官网安装脚本</span><br><span class="line">	</span><br><span class="line">sudo python get-pip.py  &#x2F;&#x2F;优先运行安装python2</span><br><span class="line">	</span><br><span class="line">sudo python3 get-pip.py  &#x2F;&#x2F;运行安装脚本。</span><br></pre></td></tr></table></figure>
+
+<p>或者直接用包管理器安装 pip，如 Debian 和 Ubuntu：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install python-pip</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-清除缓存"><a href="#3-清除缓存" class="headerlink" title="3.清除缓存"></a>3.清除缓存</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt-get clean all</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-升级pip到最新版本"><a href="#4-升级pip到最新版本" class="headerlink" title="4.升级pip到最新版本"></a>4.升级pip到最新版本</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install --upgrade pip</span><br></pre></td></tr></table></figure>
+
+<p>&amp;</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install -U pip  &#x2F;&#x2F;upgrading pip</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-pip-安装-python-版本的-shadowsocks"><a href="#5-pip-安装-python-版本的-shadowsocks" class="headerlink" title="5.pip 安装 python 版本的 shadowsocks"></a>5.pip 安装 python 版本的 shadowsocks</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-安装完成后，编辑shadowsocks的配置文件，路径为-etc-shadowsocks-json，编辑命令"><a href="#6-安装完成后，编辑shadowsocks的配置文件，路径为-etc-shadowsocks-json，编辑命令" class="headerlink" title="6.安装完成后，编辑shadowsocks的配置文件，路径为/etc/shadowsocks.json，编辑命令"></a>6.安装完成后，编辑shadowsocks的配置文件，路径为/etc/shadowsocks.json，编辑命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;shadowsocks.json</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-将以下内容根据实际情况填入json配置文件"><a href="#7-将以下内容根据实际情况填入json配置文件" class="headerlink" title="7.将以下内容根据实际情况填入json配置文件"></a>7.将以下内容根据实际情况填入json配置文件</h4><p>此处进入<strong>vim</strong>文件编辑</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;server&quot;: &quot;0.0.0.0&quot;,  &#x2F;&#x2F;这里不用改，全0代表地服务器监所有可用网络。</span><br><span class="line">    &quot;server_port&quot;: 443,  &#x2F;&#x2F;服务器端口号，1025到65535任选一。</span><br><span class="line">    &quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">    &quot;local_port&quot;:1080,</span><br><span class="line">    &quot;password&quot;: &quot;password&quot;,  &#x2F;&#x2F;设置登录密码。</span><br><span class="line">    &quot;method&quot;: &quot;chacha20&quot;  &#x2F;&#x2F;加密方式。</span><br><span class="line">    &quot;timeout&quot;: 300,</span><br><span class="line">    &quot;mode&quot;: &quot;tcp_and_udp&quot;,</span><br><span class="line">    &quot;fast_open&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进阶配置多端口：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;server&quot;:&quot;0.0.0.0&quot;,</span><br><span class="line">	&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">	&quot;local_port&quot;:1080,</span><br><span class="line">	&quot;port_password&quot;:&#123;</span><br><span class="line">	&quot;8381&quot;: &quot;D77b73E578&quot;,</span><br><span class="line">	&quot;8382&quot;: &quot;53AFf96aEf&quot;,</span><br><span class="line">	&quot;8383&quot;: &quot;6E18a11eA2&quot;,</span><br><span class="line">	&quot;8384&quot;: &quot;OTU0OWQ2Nz&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;timeout&quot;:300,</span><br><span class="line">	&quot;method&quot;:&quot;aes-256-cfb&quot;,</span><br><span class="line">	&quot;fast_open&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-编辑自启动脚本，编辑命令"><a href="#8-编辑自启动脚本，编辑命令" class="headerlink" title="8.编辑自启动脚本，编辑命令"></a>8.编辑自启动脚本，编辑命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;shadowsocks.service</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-将以下内容根据实际情况填入server配置文件"><a href="#9-将以下内容根据实际情况填入server配置文件" class="headerlink" title="9.将以下内容根据实际情况填入server配置文件"></a>9.将以下内容根据实际情况填入server配置文件</h4><p>这里进入vim文件编辑，脚本内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;Shadowsocks</span><br><span class="line">[Service]</span><br><span class="line">TimeoutStartSec&#x3D;0</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;ssserver -c&#x2F;etc&#x2F;shadowsocks.json</span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
+
+<h4 id="10-启动-shadowsocks-服务"><a href="#10-启动-shadowsocks-服务" class="headerlink" title="10.启动 shadowsocks 服务"></a>10.启动 shadowsocks 服务</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable shadowsocks</span><br><span class="line">systemctl start shadowsocks</span><br><span class="line">systemctl stop shadowsocks</span><br><span class="line">systemctl status shadowsocks</span><br></pre></td></tr></table></figure>
+
+<h4 id="11-查看状态"><a href="#11-查看状态" class="headerlink" title="11.查看状态"></a>11.查看状态</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl status shadowsocks -l</span><br></pre></td></tr></table></figure>
+
+<p><em>如果显示active(running)就表示服务器配置成功。没有成功的话可以返回“安装配置shadowsocks”认真按介绍再来一次。</em></p>
+<h4 id="12-自愿安装bbr"><a href="#12-自愿安装bbr" class="headerlink" title="12.自愿安装bbr"></a>12.自愿安装bbr</h4><h4 id="13-各种下载地址"><a href="#13-各种下载地址" class="headerlink" title="13.各种下载地址"></a>13.各种下载地址</h4><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYWRvd3NvY2tzL3NoYWRvd3NvY2tzLXdpbmRvd3MvcmVsZWFzZXMvZG93bmxvYWQvNC4xLjEwLjAvU2hhZG93c29ja3MtNC4xLjEwLjAuemlw">Win客户端<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYWRvd3NvY2tzL1NoYWRvd3NvY2tzWC1ORy9yZWxlYXNlcy9kb3dubG9hZC92MS45LjQvU2hhZG93c29ja3NYLU5HLjEuOS40LnppcA==">Mac客户端<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYWRvd3NvY2tzL3NoYWRvd3NvY2tzLWFuZHJvaWQvcmVsZWFzZXMvZG93bmxvYWQvdjUuMC42L3NoYWRvd3NvY2tzLS11bml2ZXJzYWwtNS4wLjYuYXBr">安卓客户端<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYWRvd3NvY2tzL3NoYWRvd3NvY2tzLXF0NS9yZWxlYXNlcy9kb3dubG9hZC92My4wLjEvU2hhZG93c29ja3MtUXQ1LTMuMC4xLXg4Nl82NC5BcHBJbWFnZQ==">Linux客户端<i class="fa fa-external-link-alt"></i></span></p>
+]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>shadowsocks</category>
+        <category>Linux</category>
+        <category>CentOS</category>
+      </categories>
+      <tags>
+        <tag>shadowsocks</tag>
+        <tag>CentOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Loon使用教程①，软件上手详解</title>
+    <url>/loon-use-mind.html</url>
+    <content><![CDATA[<h3 id="成文时间：2020-04-09-17-11-32"><a href="#成文时间：2020-04-09-17-11-32" class="headerlink" title="成文时间：2020-04-09 17:11:32"></a>成文时间：2020-04-09 17:11:32</h3><h3 id="Loon-气球"><a href="#Loon-气球" class="headerlink" title="Loon[气球]"></a>Loon[气球]</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><h6 id="简介：Loon是iOS平台上收费为2-99-的界面优美，操作方便的网络代理工具，-只是工具，不是VPN-。"><a href="#简介：Loon是iOS平台上收费为2-99-的界面优美，操作方便的网络代理工具，-只是工具，不是VPN-。" class="headerlink" title="简介：Loon是iOS平台上收费为2.99$的界面优美，操作方便的网络代理工具，**只是工具，不是VPN**。"></a>简介：Loon是iOS平台上收费为2.99$的界面优美，操作方便的网络代理工具，**<em>只是工具，不是VPN**</em>。</h6><h6 id="作者：Twitter；GitHub库"><a href="#作者：Twitter；GitHub库" class="headerlink" title="作者：Twitter；GitHub库"></a>作者：<span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9sb29uMHgwMA==">Twitter<i class="fa fa-external-link-alt"></i></span>；GitHub<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0xvb24weDAwL0xvb25NYW51YWw=">库<i class="fa fa-external-link-alt"></i></span></h6><h6 id="下载所需条件：①外区Apple-ID；②外币支付方式。"><a href="#下载所需条件：①外区Apple-ID；②外币支付方式。" class="headerlink" title="下载所需条件：①外区Apple ID；②外币支付方式。"></a>下载所需条件：①外区Apple ID；②外币支付方式。</h6><h3 id="界面介绍【思维导图】"><a href="#界面介绍【思维导图】" class="headerlink" title="界面介绍【思维导图】"></a>界面介绍【思维导图】</h3><h4 id="Loon软件"><a href="#Loon软件" class="headerlink" title="Loon软件"></a>Loon软件</h4><img src="/images/1987264126.png" style="zoom: 30%;" />
+
+<h3 id="首页【仪表】从上到下"><a href="#首页【仪表】从上到下" class="headerlink" title="首页【仪表】从上到下"></a>首页【仪表】从上到下</h3><h4 id="第一版块"><a href="#第一版块" class="headerlink" title="第一版块"></a>第一版块</h4><ul>
+<li>连接时间显示00:00:00</li>
+<li>开关Start</li>
+</ul>
+<h4 id="第二版块"><a href="#第二版块" class="headerlink" title="第二版块"></a>第二版块</h4><ul>
+<li>添加【ss ssr vmess】</li>
+<li>二维码扫描添加节点</li>
+<li>订阅【订阅节点】</li>
+<li>统计【统计速度及流量用量】</li>
+<li>日志【观察运行状态】</li>
+</ul>
+<h4 id="第三大版块【快捷方式】"><a href="#第三大版块【快捷方式】" class="headerlink" title="第三大版块【快捷方式】"></a>第三大版块【快捷方式】</h4><ul>
+<li><p>模式选择</p>
+<ul>
+<li>全局直连【啥也不干】</li>
+<li>自动分流【常用：根据策略组干】</li>
+<li>全局代理【不常用：所有流量绕一圈】</li>
+</ul>
+</li>
+<li><p>策略组【四种类型】</p>
+<ul>
+<li>Select</li>
+</ul>
+</li>
+<li><p>全局策略【两种模式】</p>
+<ul>
+<li>Direct全局直连</li>
+<li>Reject</li>
+</ul>
+</li>
+<li><p>Final规则【内置】</p>
+<ul>
+<li>DIRECT</li>
+<li>REJECT</li>
+</ul>
+</li>
+<li><p>最近请求【主要查看你用网络干了啥】</p>
+</li>
+<li><p>Rewrite</p>
+</li>
+<li><p>MitM证书-高级功能必用</p>
+</li>
+<li><p>保存的请求-看你的爱好</p>
+</li>
+</ul>
+<h3 id="配置-从上到下"><a href="#配置-从上到下" class="headerlink" title="配置-从上到下"></a>配置-从上到下</h3><h4 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h4><ul>
+<li><p>单个节点管理</p>
+</li>
+<li><p>订阅节点管理</p>
+</li>
+<li><p>筛选节点-筛选订阅节点</p>
+<ul>
+<li>NodeSelect:使用在UI.上选择的节点。</li>
+<li>NameKeyword:根据提供的关键词对订阅中所有节点的名称进行筛选，使用筛选后的节点。</li>
+<li>NameRegex:根据提供的正则表达式对订阅中所有节点的名称进行筛选，使用筛选后的节点。</li>
+</ul>
+</li>
+</ul>
+<h4 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h4><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ul>
+<li>单个规则-自己手动添加需要的规则</li>
+<li>订阅规则-用远程链接订阅大佬的规则</li>
+<li>规则测试-测试你的规则是否合理，速度影响等</li>
+</ul>
+<h4 id="Rewrite"><a href="#Rewrite" class="headerlink" title="Rewrite"></a>Rewrite</h4><ul>
+<li>手动书写重写规则</li>
+<li>订阅大佬的重写规则</li>
+</ul>
+<h4 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h4><ul>
+<li>因目前只有tf版，所以此模块单独讲</li>
+</ul>
+<h4 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h4><h4 id="MITM"><a href="#MITM" class="headerlink" title="MITM"></a>MITM</h4><ul>
+<li>域名===Quantumult X上的hostname</li>
+<li>安装证书</li>
+</ul>
+<h4 id="编辑-老手编辑常用"><a href="#编辑-老手编辑常用" class="headerlink" title="编辑-老手编辑常用"></a>编辑-老手编辑常用</h4><ul>
+<li>手动操作，编辑功能强大，核心，可管理全局的编辑。</li>
+</ul>
+<h3 id="更多-从上到下"><a href="#更多-从上到下" class="headerlink" title="更多-从上到下"></a>更多-从上到下</h3><h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><h4 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h4><h4 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h4><h3 id=""><a href="#" class="headerlink" title=""></a><img src="/images/1987264127.png" style="zoom: 50%;" /></h3>]]></content>
+      <categories>
+        <category>iOS</category>
+        <category>Loon</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Loon</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Loon使用教程②，全局配置文件详细讲解</title>
+    <url>/loon-config.html</url>
+    <content><![CDATA[<p>成文不易，此文没有<span class="exturl" data-url="aHR0cHM6Ly93d3cubm90aW9uLnNvL0xvb24tZjBhOThjMzlmNTIyNGMwOWIyODFjNzk4MzczODA0MzE=">官方<i class="fa fa-external-link-alt"></i></span>详细，但改动都清晰可见，按照顺序很容易理解，对小白极其友好！</p>
+<hr>
+<h2 id="一、示例配置文件赏析"><a href="#一、示例配置文件赏析" class="headerlink" title="一、示例配置文件赏析"></a>一、示例配置文件赏析</h2><h3 id="商店版"><a href="#商店版" class="headerlink" title="商店版"></a>商店版</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#default configure</span><br><span class="line">#Update Date: 2019-10-21 11:42:20 +0000</span><br><span class="line">#author: Loon</span><br><span class="line"></span><br><span class="line">[General]</span><br><span class="line">skip-proxy &#x3D; 192.168.0.0&#x2F;16,10.0.0.0&#x2F;8,172.16.0.0&#x2F;12,localhost,*.local,e.crashlynatics.com</span><br><span class="line">bypass-tun &#x3D; 10.0.0.0&#x2F;8,100.64.0.0&#x2F;10,127.0.0.0&#x2F;8,169.254.0.0&#x2F;16,172.16.0.0&#x2F;12,192.0.0.0&#x2F;24,192.0.2.0&#x2F;24,192.88.99.0&#x2F;24,192.168.0.0&#x2F;16,198.18.0.0&#x2F;15,198.51.100.0&#x2F;24,203.0.113.0&#x2F;24,224.0.0.0&#x2F;4,255.255.255.255&#x2F;32</span><br><span class="line"># [DNS] &#x3D;&gt; DNS 服务器</span><br><span class="line">dns-server &#x3D; system,119.29.29.29,223.5.5.5</span><br><span class="line">allow-udp-proxy &#x3D; false</span><br><span class="line">host &#x3D; 127.0.0.1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[Proxy]</span><br><span class="line"># 内置 DIRECT、REJECT 策略</span><br><span class="line"># 节点名称 &#x3D; 协议，服务器地址，服务器端口，加密协议，密码，</span><br><span class="line">1 &#x3D; Shadowsocks, 1.2.3.4, 443, aes-128-gcm, &quot;password&quot;</span><br><span class="line">2 &#x3D; Shadowsocks, 1.2.3.4, 443, aes-128-gcm, &quot;password&quot;</span><br><span class="line">3 &#x3D; ShadowsocksR, 1.2.3.4, 443, aes-256-cfb,&quot;password&quot;,auth_aes128_md5,&#123;&#125;,tls1.2_ticket_auth,&#123;&#125;</span><br><span class="line">4 &#x3D; ShadowsocksR, 1.2.3.4, 10076, aes-128-cfb,&quot;password&quot;,auth_aes128_md5,&#123;&#125;,tls1.2_ticket_auth,&#123;&#125;</span><br><span class="line"># vmess</span><br><span class="line"># 节点名称 &#x3D; 协议，服务器地址，端口，加密方式，UUID，传输方式:(tcp&#x2F;ws),path：websocket握手header中的path，host：websocket握手header中的path，over-tls:是否tls，tls-name：远端w服务器域名，skip-cert-verify：是否跳过证书校验（默认否）</span><br><span class="line">#5 &#x3D; vmess, 1.2.3.4, 10086, aes-128-gcm,&quot;uuid&quot;,transport:ws,path:&#x2F;,host:icloud.com,over-tls:true,tls-name:youtTlsServerName.com,skip-cert-verify:false</span><br><span class="line"></span><br><span class="line">[Remote Proxy]</span><br><span class="line"># 订阅节点</span><br><span class="line"># 别名 &#x3D; 订阅URL</span><br><span class="line">Subs &#x3D; https:&#x2F;&#x2F;example&#x2F;server-complete.txt</span><br><span class="line">Subs2 &#x3D; https:&#x2F;&#x2F;example2&#x2F;server-complete.txt</span><br><span class="line"></span><br><span class="line">[Remote Filter]</span><br><span class="line"># 筛选订阅节点，筛选后的结果可加入到策略组中，目前支持三种筛选方式</span><br><span class="line"># NodeSelect: 使用在UI上选择的节点。</span><br><span class="line"># NameKeyword: 根据提供的关键词对订阅中所有节点的名称进行筛选，使用筛选后的节点。</span><br><span class="line"># NameRegex: 根据提供的正则表达式对订阅中所有节点的名称进行筛选，使用筛选后的节点。</span><br><span class="line">Netflix &#x3D; NodeSelect,Subs</span><br><span class="line">Hulu &#x3D; NameKeyword,Subs,Subs2,FilterKey &#x3D; Hulu</span><br><span class="line">HK &#x3D; NameRegex,Subs,FilterKey &#x3D; *HK</span><br><span class="line"></span><br><span class="line">[Proxy Group]</span><br><span class="line"># 节点选项</span><br><span class="line">PROXY &#x3D; select,Auto,1,2,3,4,Subs</span><br><span class="line"># url-test模式，给提供的url发出http header请求，根据返回结果，选择测速最快的节点，默认间隔600s，测速超时时间5s，为了避免资源浪费，建议节点数不要过多，只支持单个节点和远端节点，其他会被忽略</span><br><span class="line">Auto &#x3D; url-test,1,2,3,4,Subs,url &#x3D; http:&#x2F;&#x2F;bing.com&#x2F;,interval &#x3D; 600</span><br><span class="line"># fallback模式，和url-test类似，不同的是会根据顺序返回第一个可用的节点，为了避免资源浪费，建议节点数不要过多，只支持单个节点和远端节点，其他会被忽略</span><br><span class="line">Auto1 &#x3D; fallback,1,2,3,4,Subs,url &#x3D; http:&#x2F;&#x2F;bing.com&#x2F;,interval &#x3D; 600</span><br><span class="line"># 别名 &#x3D; ssid，默认 &#x3D; 策略， 蜂窝 &#x3D; 策略， ssid名称 &#x3D; 策略</span><br><span class="line">SSID &#x3D; ssid, default &#x3D; PROXY, cellular &#x3D; DIRECT, &quot;DivineEngine&quot; &#x3D; PROXY</span><br><span class="line"># 广告模式</span><br><span class="line">Advertising &#x3D; select,REJECT,DIRECT</span><br><span class="line"># 白名单模式 PROXY，黑名单模式 DIRECT</span><br><span class="line">Final &#x3D; select,PROXY,DIRECT</span><br><span class="line"></span><br><span class="line">[Rule]</span><br><span class="line"># Local RULE</span><br><span class="line"># Type:DOMAIN-SUFFIX,DOMAIN,DOMAIN-KEYWORD,USER-AGENT,URL-REGEX,IP-CIDR</span><br><span class="line"># Strategy:DIRECT,Proxy,REJECT</span><br><span class="line"># Options:force-remote-dns(Default:false),no-resolve</span><br><span class="line">DOMAIN,google.com,PROXY</span><br><span class="line"># GeoIP China</span><br><span class="line">GEOIP,CN,DIRECT</span><br><span class="line">FINAL,Final</span><br><span class="line"></span><br><span class="line">[Remote Rule]</span><br><span class="line"># Remote Rule</span><br><span class="line"># 订阅规则URL,策略</span><br><span class="line"># PROXY</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Loon0x00&#x2F;LoonExampleConfig&#x2F;master&#x2F;Rule&#x2F;ExampleRule.list,PROXY</span><br><span class="line"></span><br><span class="line">[URL Rewrite]</span><br><span class="line">enable &#x3D; true</span><br><span class="line"># Redirect Google Search Service</span><br><span class="line">^https?:\&#x2F;\&#x2F;(www.)?(g|google)\.cn https:&#x2F;&#x2F;www.google.com 302</span><br><span class="line"></span><br><span class="line">[Remote Rewrite]</span><br><span class="line"># 订阅 URL Rewrite</span><br><span class="line"># 订阅url,别名(可选)</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Loon0x00&#x2F;LoonExampleConfig&#x2F;master&#x2F;Rewrite&#x2F;AutoRewrite_Example.list,auto</span><br><span class="line"></span><br><span class="line">[MITM]</span><br><span class="line">hostname &#x3D; *.example.com,*.sample.com</span><br><span class="line">enable &#x3D; true</span><br><span class="line">skip-server-cert-verify &#x3D; true</span><br><span class="line">#ca-p12 &#x3D;</span><br><span class="line">#ca-passphrase &#x3D;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TF版本v-2-1-0"><a href="#TF版本v-2-1-0" class="headerlink" title="TF版本v-2.1.0"></a>TF版本v-2.1.0</h3><p>【商店版基础上增加脚本配置模块】</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Script]</span><br><span class="line">enable &#x3D; true</span><br><span class="line"># http-request 处理请求的脚本</span><br><span class="line"># http-response 处理请求响应的脚本</span><br><span class="line"># cron 定时脚本</span><br><span class="line"></span><br><span class="line"># http-request ^https?:\&#x2F;\&#x2F;(www.)?(example)\.com script-path&#x3D;localscript.js</span><br><span class="line"># http-response ^https?:\&#x2F;\&#x2F;(www.)?(example)\.com script-path&#x3D;https:&#x2F;&#x2F;example.com&#x2F;loon.js,timeout&#x3D;10,requires-body &#x3D; true</span><br><span class="line"># cron &quot;0 8 * * *&quot; script-path&#x3D;cron.js</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、配置文件各版块通讲"><a href="#二、配置文件各版块通讲" class="headerlink" title="二、配置文件各版块通讲"></a>二、配置文件各版块通讲</h2><h3 id="1、-General"><a href="#1、-General" class="headerlink" title="1、[General]"></a>1、[General]</h3><p>默认不做修改</p>
+<h3 id="2、-DNS"><a href="#2、-DNS" class="headerlink" title="2、[DNS]"></a>2、[DNS]</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dns-server字段后面可增加你认为优质的dns</span><br><span class="line">allow-udp-proxy字段可以开启关闭udp模式</span><br><span class="line">host字段本机不做修改</span><br></pre></td></tr></table></figure>
+
+<h5 id="eg："><a href="#eg：" class="headerlink" title="eg："></a>eg：</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dns-server &#x3D; system,119.29.29.29,223.5.5.5,1.1.1.1,8.8.8.8,114.114.114.114,8.8.4.4</span><br><span class="line">allow-udp-proxy &#x3D; true</span><br><span class="line">host &#x3D; 127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、-Proxy"><a href="#3、-Proxy" class="headerlink" title="3、[Proxy]"></a>3、[Proxy]</h3><p>此板块通过配置文件书写单个节点，但是Loon比Quantumult X有着友好的ui添加ss ssr v2ray节点，故不用再此处修改，如果你有自己的vps搭建的专属节点，你可以放在配置文件，更新配置文件即包含节点，无需每次更新后在ui界面再次添加，根据实际情况节省时间与精力。</p>
+<h3 id="4、-Remote-Proxy"><a href="#4、-Remote-Proxy" class="headerlink" title="4、[Remote Proxy]"></a>4、[Remote Proxy]</h3><p>此板块为远程订阅节点，如果机场多的朋友，强烈建议在此添加链接。通过ui添加浪费时间。</p>
+<h5 id="书写语法"><a href="#书写语法" class="headerlink" title="书写语法"></a>书写语法</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">订阅名称 &#x3D; 订阅链接</span><br><span class="line">Subs &#x3D; https:&#x2F;&#x2F;example&#x2F;server-complete.txt</span><br></pre></td></tr></table></figure>
+
+<h5 id="eg：好奇科技坞v2ray节点视频，好奇科技坞v2ray节点博客"><a href="#eg：好奇科技坞v2ray节点视频，好奇科技坞v2ray节点博客" class="headerlink" title="eg：好奇科技坞v2ray节点视频，好奇科技坞v2ray节点博客"></a>eg：<span class="exturl" data-url="aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj02ZmZGTUJBdlJ5USZ0">好奇科技坞v2ray节点视频<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9zZWFzZWF4LmNvbS9jdXJpb3VzLXYycmF5Lmh0bWw=">好奇科技坞v2ray节点博客<i class="fa fa-external-link-alt"></i></span></h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">好奇科技坞-禁止转载分享 &#x3D; https:&#x2F;&#x2F;*******</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、-Remote-Filter"><a href="#5、-Remote-Filter" class="headerlink" title="5、[Remote Filter]"></a>5、[Remote Filter]</h3><p>节点筛选，此板块稍微复杂，但是很实用。</p>
+<h3 id="6、-Proxy-Group"><a href="#6、-Proxy-Group" class="headerlink" title="6、[Proxy Group]"></a>6、[Proxy Group]</h3><p>策略组版块，策略类型四种：select，url-test，fallback，SSID，根据这四种基本类型，增加强大的策略组。</p>
+<h5 id="eg：若想复制使用，请配和下边的8、-Remote-Rule-，因为有关联。"><a href="#eg：若想复制使用，请配和下边的8、-Remote-Rule-，因为有关联。" class="headerlink" title="eg：若想复制使用，请配和下边的8、[Remote Rule]，因为有关联。"></a>eg：若想复制使用，请配和下边的8、[Remote Rule]，因为有关联。</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PROXY &#x3D; select,好奇科技坞-禁止转载分享</span><br><span class="line">Auto &#x3D; select,url-test,好奇科技坞-禁止转载分享,url &#x3D; http:&#x2F;&#x2F;bing.com&#x2F;,interval &#x3D; 600</span><br><span class="line">Auto1 &#x3D; select,fallback,好奇科技坞-禁止转载分享,url &#x3D; http:&#x2F;&#x2F;bing.com&#x2F;,interval &#x3D; 600</span><br><span class="line">SSID &#x3D; ssid, default &#x3D; PROXY, cellular &#x3D; DIRECT, &quot;DivineEngine&quot; &#x3D; PROXY</span><br><span class="line">Global &#x3D; select,PROXY,Auto,Auto1</span><br><span class="line">YouTube &#x3D; select,PROXY,Auto,Auto1</span><br><span class="line">Netflix &#x3D; select,PROXY,Auto,Auto1</span><br><span class="line">Advertising &#x3D; select,PROXY,Auto,Auto1</span><br><span class="line">Telegram &#x3D; select,PROXY,Auto,Auto1</span><br><span class="line">Apple &#x3D; select,PROXY,Auto,Auto1</span><br><span class="line">China &#x3D; select,DIRECT</span><br></pre></td></tr></table></figure>
+
+<h3 id="7、-Rule"><a href="#7、-Rule" class="headerlink" title="7、[Rule]"></a>7、[Rule]</h3><p>此板块ui添加友好</p>
+<h3 id="8、-Remote-Rule"><a href="#8、-Remote-Rule" class="headerlink" title="8、[Remote Rule]"></a>8、[Remote Rule]</h3><p>远程分类规则，此板块建议配置文件放好，与[Proxy Group]配合使用。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Loon0x00&#x2F;LoonExampleConfig&#x2F;master&#x2F;Rule&#x2F;ExampleRule.list,PROXY</span><br></pre></td></tr></table></figure>
+
+<h5 id="eg：若想复制使用，请配和上边的6、-Proxy-Group-，因为有关联。"><a href="#eg：若想复制使用，请配和上边的6、-Proxy-Group-，因为有关联。" class="headerlink" title="eg：若想复制使用，请配和上边的6、[Proxy Group]，因为有关联。"></a>eg：若想复制使用，请配和上边的6、[Proxy Group]，因为有关联。</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Unbreak.list, policy&#x3D;DIRECT, tag&#x3D;Unbreak, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Advertising.list, policy&#x3D;Advertising, tag&#x3D;Advertising, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Hijacking.list, policy&#x3D;Advertising, tag&#x3D;Hijacking, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Media&#x2F;YouTube.list, policy&#x3D;YouTube, tag&#x3D;YouTube, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Media&#x2F;Netflix.list, policy&#x3D;Netflix, tag&#x3D;Netflix, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Media&#x2F;HBO.list, policy&#x3D;Global, tag&#x3D;HBO, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Media&#x2F;Fox.list, policy&#x3D;Global, tag&#x3D;Fox, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;GlobalMedia.list, policy&#x3D;Global, tag&#x3D;GlobalMedia, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;HKMTMedia.list, policy&#x3D;Global, tag&#x3D;HKMTMedia, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Telegram.list, policy&#x3D;Telegram, tag&#x3D;Telegram, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Global.list, policy&#x3D;Global, tag&#x3D;Global, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;Apple.list, policy&#x3D;Apple, tag&#x3D;Apple, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Surge&#x2F;Ruleset&#x2F;China.list, policy&#x3D;China, tag&#x3D;China, enable&#x3D;true</span><br></pre></td></tr></table></figure>
+
+<h3 id="9、-URL-Rewrite"><a href="#9、-URL-Rewrite" class="headerlink" title="9、[URL Rewrite]"></a>9、[URL Rewrite]</h3><p>默认不动，如有需要可ui添加。</p>
+<h3 id="10、-Remote-Rewrite"><a href="#10、-Remote-Rewrite" class="headerlink" title="10、[Remote Rewrite]"></a>10、[Remote Rewrite]</h3><h5 id="eg：官方复写没有放入hostname，所以我把hostname和Rewrite整合在我的仓库新建一个链接，方便使用。"><a href="#eg：官方复写没有放入hostname，所以我把hostname和Rewrite整合在我的仓库新建一个链接，方便使用。" class="headerlink" title="eg：官方复写没有放入hostname，所以我把hostname和Rewrite整合在我的仓库新建一个链接，方便使用。"></a>eg：官方复写没有放入hostname，所以我把hostname和Rewrite整合在我的仓库新建一个链接，方便使用。</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ssooenftzero&#x2F;0X&#x2F;master&#x2F;Loon&#x2F;conf&#x2F;loonnowshremoterewrite.conf, tag&#x3D;官方复写好奇整合, enable&#x3D;true</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Rewrite.conf, tag&#x3D;神机复写, enable&#x3D;true</span><br></pre></td></tr></table></figure>
+
+<h3 id="11、-Script"><a href="#11、-Script" class="headerlink" title="11、[Script]"></a>11、[Script]</h3><p><del>此板块商店版暂无。所以此块eg代码适用于tf版本。</del></p>
+<p>伴随着商店版的更新，Loon即将迎来了一波涨价，Loon将支持真正意义上的远程调用js脚本，大家且用且珍惜，Quantumult X作者也是在一拨人滥用脚本之后，狠心阉割远程脚本功能，不希望Loon迎来这样的局面，因为远程给我们省下了很多事儿。</p>
+<h5 id="eg：此脚本远程连接，几乎整合所有大佬的js，所以无需再次重复添加"><a href="#eg：此脚本远程连接，几乎整合所有大佬的js，所以无需再次重复添加" class="headerlink" title="eg：此脚本远程连接，几乎整合所有大佬的js，所以无需再次重复添加"></a>eg：此脚本远程连接，几乎整合所有大佬的js，所以无需再次重复添加</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#nzw9314整理</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;nzw9314&#x2F;Loon&#x2F;master&#x2F;Script.conf</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;nzw9314&#x2F;Loon&#x2F;master&#x2F;Cookie.conf</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;nzw9314&#x2F;Loon&#x2F;master&#x2F;Task.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="12、-MITM"><a href="#12、-MITM" class="headerlink" title="12、[MITM]"></a>12、[MITM]</h3><p>证书版块，此板块也不需要动，因为10、[Remote Rewrite]的远程订阅已经包含需要的hostname字段。证书在ui界面生成安装。</p>
+]]></content>
+      <categories>
+        <category>iOS</category>
+        <category>Loon</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Loon</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Loon使用教程③，解锁国际版抖音TikTok完美使用</title>
+    <url>/loon-unlock-tiktok.html</url>
+    <content><![CDATA[<img src="/images/216253459.gif" style="zoom: 50%;" />
+
+<h2 id="Loon-解锁-TikTok-区域限制"><a href="#Loon-解锁-TikTok-区域限制" class="headerlink" title="Loon 解锁 TikTok 区域限制"></a>Loon 解锁 TikTok 区域限制</h2><p>在<code>[URL Rewrite]</code>字段下添加如下代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(?&lt;&#x3D;_region&#x3D;)CN(?&#x3D;&amp;) KR 307</span><br><span class="line">(?&lt;&#x3D;&amp;app_version&#x3D;)16..(?&#x3D;.?.?&amp;) 1 307</span><br><span class="line">(?&lt;&#x3D;\?version_code&#x3D;)16..(?&#x3D;.?.?&amp;) 1 307</span><br></pre></td></tr></table></figure>
+
+<p>区域请修改下方国家代码，默认为韩国<code>KR</code>。</p>
+]]></content>
+      <categories>
+        <category>iOS</category>
+        <category>Loon</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Loon</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Quantumult X教程②，1.0.8+版本更新远程托管与iCloud配置同步</title>
+    <url>/quantumultx-remote-icloud.html</url>
+    <content><![CDATA[<h2 id="远程托管"><a href="#远程托管" class="headerlink" title="远程托管"></a>远程托管</h2><p>约等于配置文件的下载</p>
+<p>配置文件远程订阅链接：<span class="exturl" data-url="aHR0cHM6Ly93d3cudHNpbmdzZWEuY29tLzU3OC5odG1s">https://www.tsingsea.com/578.html<i class="fa fa-external-link-alt"></i></span></p>
+<p>不同之处，详细见图</p>
+<img src="/images/1328184739.png" style="zoom:50%;" />
+
+<img src="/images/1328184740.png" style="zoom:50%;" />
+
+<p>注意：订阅不上需要扶墙，远程托管不能同步更新</p>
+<h2 id="iCloud配置同步"><a href="#iCloud配置同步" class="headerlink" title="iCloud配置同步"></a>iCloud配置同步</h2><p>将 <span class="exturl" data-url="aHR0cHM6Ly93d3cudHNpbmdzZWEuY29tLzU3OC5odG1s">配置下载<i class="fa fa-external-link-alt"></i></span> .conf放于<code>文件-iCloud Drive-Quantumult X-Profiles</code>文件夹下</p>
+<p>在Quantumult X中的远程托管处填入本地iCloud Drive下的链接，此方法会在你修改本地配置时，同步更新到iCloud，同apple id设备也同步更新。</p>
+]]></content>
+      <categories>
+        <category>iOS</category>
+        <category>Quantumult X</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Quantumult X</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Quantumult X教程③，完美解锁TikTok教程</title>
+    <url>/quantumultx-unlock-tiktok.html</url>
+    <content><![CDATA[<p>iOS 使用解锁 TikTok （国际版）区域限制【Quantumult X 篇】</p>
+<h2 id="解锁Tiktok操作前必看"><a href="#解锁Tiktok操作前必看" class="headerlink" title="解锁Tiktok操作前必看"></a>解锁Tiktok操作前必看</h2><p>1.iMazing 备份TikTok，避免后续不小心更新Tiktok；</p>
+<p>2.请使用正版圈x软件，如何查看正版，如下【绿色对勾为正版标识】：</p>
+<img src="/images/216253458.png" style="zoom:50%;" />
+
+<p>3.本人现在使用AppStore最新版tiktok(15.5.6)，仍能完美使用。</p>
+<img src="/images/216253459.png" style="zoom:50%;" />
+
+<h2 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h2><h3 id="使用Quantumult-X-解锁-TikTok-区域限制"><a href="#使用Quantumult-X-解锁-TikTok-区域限制" class="headerlink" title="使用Quantumult X 解锁 TikTok 区域限制"></a>使用Quantumult X 解锁 TikTok 区域限制</h3><p>1.下载脚本配置文件，分别复制以下脚本配置文件链接</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">（NobyDa） https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;NobyDa&#x2F;Script&#x2F;master&#x2F;QuantumultX&#x2F;Js.conf</span><br><span class="line"></span><br><span class="line">（花姐） https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Rewrite.conf</span><br></pre></td></tr></table></figure>
+
+<p>2.进入QuantumultX，点击页面右下角三菱按钮，找到Rewrite模块，点击引用，粘贴刚刚复制的链接，右上角点击确定，点击全部同步就可以下载脚本配置文件</p>
+<p>3.再次进入QuantumultX，点击页面右下角三菱按钮，找到配置文件-点击编辑-找到[rewrite_local]，并在下方粘贴以下代码；</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(?&lt;=(carrier|sys)_region=)CN url 307 JP</span><br><span class="line">(?&lt;=version_code=)\d&#123;1,&#125;.\d&#123;1&#125;\.\d&#123;1&#125; url 307 14.0.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="美区为14-0-0，港区则将代码14-0-0改为8-4-0即可"><a href="#美区为14-0-0，港区则将代码14-0-0改为8-4-0即可" class="headerlink" title="美区为14.0.0，港区则将代码14.0.0改为8.4.0即可"></a>美区为14.0.0，港区则将代码14.0.0改为8.4.0即可</h3><p>1.复制api*.tiktokv.com, api*.musical.ly, api*.amemv.com, aweme*.snssdk.com，</p>
+<p>2.进入QuantumultX，点击页面右下角三菱按钮，找到配置文件模块，点击编辑，滑至页面末尾；</p>
+<p>3.（注意：在Rewrite模块引用的远程脚本配置文件js.con中包含了此项，所以这一步可以省略，大致明白原理即可）</p>
+<p>4.找到[mitm]，在 hostname 后面粘贴，粘贴后效果大致如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hostname &#x3D; api*.tiktokv.com, api*.musical.ly, api*.amemv.com, aweme*.snssdk.com</span><br></pre></td></tr></table></figure>
+
+<p>5.注意： ;hostname 前面的; 符号（注释符号），如果有这个符号，务必删掉；这一步其实跟Shadowrocket/Surge配置证书步骤等是一模一样的；在配置文件模块-编辑-下可以看到你所有配置的文本配置（即以文本样式进行配置），包括你的节点订阅，分流规则等等；</p>
+<h2 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h2><p>1.进入QuantumultX，点击页面右下角三菱按钮，找到MinM模块，点击生成证书，提示生成成功，点击安装证书此时会跳转至 Safari，提示此网站…下载一个配置描述文件。您要允许吗？，点击允许，网页提示已下载描述文件；</p>
+<p>2.进入 iOS 系统设置- 通用-描述文件-已下载的描述文件-选中，并安装，输入密码…完成描述文件安装；</p>
+<p>3.进入 iOS 系统设置- 通用-关于本机-证书信任设置-针对根证书启用完全信任-选中刚刚安装的并启用即可；</p>
+<h2 id="享用Tiktok"><a href="#享用Tiktok" class="headerlink" title="享用Tiktok"></a>享用Tiktok</h2><img src="/images/216253459.gif" style="zoom:50%;" />
+
+<p>1.进入QuantumultX，点击页面右下角三菱按钮</p>
+<p>2.开启 Rewrite &amp; MinM ；</p>
+<h2 id="换区操作"><a href="#换区操作" class="headerlink" title="换区操作"></a>换区操作</h2><p>如想切换到其他地区，进入QuantumultX，点击页面右下角三菱按钮，找到Rewrite模块，点击添加，复制</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(?&lt;&#x3D;(carrier|account|sys)_region&#x3D;)CN url 307 JP</span><br><span class="line">将JP修改成其他地区英文缩写即可，其他国家或地区代码。</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>iOS</category>
+        <category>Quantumult X</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Quantumult X</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Quantumult-X小白教程①，软件上手详细讲解</title>
+    <url>/quantumultx-use-mind.html</url>
+    <content><![CDATA[<h2 id="软件简介："><a href="#软件简介：" class="headerlink" title="软件简介："></a>软件简介：</h2><ol>
+<li><p>开发者：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Nyb3NzdXRpbGl0eQ==">Cross Utility<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>Quantumult X和Quantumult为同一开发者</p>
+</li>
+<li><p>功能上，Quantumult X能用js脚本，但整体使用复杂</p>
+</li>
+<li><p>附<span class="exturl" data-url="aHR0cHM6Ly93d3cubm90aW9uLnNvL1F1YW50dW11bHQtWC0xZDMyZGRjNmU2MWM0ODkyYWQyZWM1ZWE0N2YwMDkxNw==">超详细不完全教程<i class="fa fa-external-link-alt"></i></span>，小白若是无耐心，劝你别看，你可能直接放弃！</p>
+</li>
+</ol>
+<h2 id="软件布局概览："><a href="#软件布局概览：" class="headerlink" title="软件布局概览："></a>软件布局概览：</h2><p>App图标【还是挺酷】</p>
+<img src="/images/Quantumult X.png">
+
+<p>首次打开界面简单认识</p>
+<img src="/images/147035548.png" style="zoom:50%;">
+
+<p>主要操作界面简单认识</p>
+<img src="/images/147035549.png" style="zoom:50%;">
+
+<h2 id="使用教程："><a href="#使用教程：" class="headerlink" title="使用教程："></a>使用教程：</h2><p>详细见<span class="exturl" data-url="aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1HSS1jRnJrWHRJcw==">视频教程<i class="fa fa-external-link-alt"></i></span>，此处仅仅列出需要用到的东西。</p>
+<h2 id="需要准备的东西：【从操作界面从上往下列出】"><a href="#需要准备的东西：【从操作界面从上往下列出】" class="headerlink" title="需要准备的东西：【从操作界面从上往下列出】"></a>需要准备的东西：【从操作界面从上往下列出】</h2><h3 id="1-节点板块"><a href="#1-节点板块" class="headerlink" title="1.节点板块"></a>1.节点板块</h3><p>UI界面添加节点只能添加ss/ss url/ss扫码添加，订阅链接需要转化为Quantumult X所支持的，网上各种转化接口，如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">KOP-XIAO](https:&#x2F;&#x2F;github.com&#x2F;KOP-XIAO&#x2F;QuantumultX-Surge-API)：https:&#x2F;&#x2F;dove.589669.xyz&#x2F;all2quanx?url&#x3D;urlencode后的链接</span><br><span class="line"></span><br><span class="line">[Fndroid](http:&#x2F;&#x2F;cloudcompute.lbyczf.com&#x2F;x-rule-set[&#x2F;github%E8%B7%AF%E5%BE%84])：http:&#x2F;&#x2F;cloudcompute.lbyczf.com&#x2F;x-rule-set&#x2F;“GitHub路径”</span><br><span class="line"></span><br><span class="line">或者：http:&#x2F;&#x2F;cloudcompute.lbyczf.com&#x2F;x-rule-set?url&#x3D;普通订阅链接</span><br></pre></td></tr></table></figure>
+
+<p>针对小白，不介绍太多，此处不推荐在线转换，自行查找。</p>
+<h3 id="2-分流板块"><a href="#2-分流板块" class="headerlink" title="2.分流板块"></a>2.分流板块</h3><p>手动添加分流，和shadowrocket Quantumult一样</p>
+<p>引用-远程添加分流，附上简单list形式分流链接，感谢ConnersHua</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Filter&#x2F;Unbreak.list				https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Filter&#x2F;Advertising.list				https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Filter&#x2F;Hijacking.list				https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Filter&#x2F;ForeignMedia.list				https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Filter&#x2F;DomesticMedia.list				https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Filter&#x2F;Global.list				https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Filter&#x2F;China.list</span><br></pre></td></tr></table></figure>
+
+<p>搜索-主要用于你觉得哪条分流不对劲，用搜索功能查找修改/删除。</p>
+<h3 id="3-Rewrite重写板块"><a href="#3-Rewrite重写板块" class="headerlink" title="3.Rewrite重写板块"></a>3.Rewrite重写板块</h3><p>手动添加重写，小白请别想了，过。</p>
+<p>引用-远程添加重写，附上简单conf形式重写链接，感谢ConnersHua</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ConnersHua&#x2F;Profiles&#x2F;master&#x2F;Quantumult&#x2F;X&#x2F;Rewrite.conf</span><br></pre></td></tr></table></figure>
+
+<p>搜索-主要用于你觉得哪条重写地址不对劲，用搜索功能查找修改/删除。</p>
+<h3 id="4-MitM证书板块"><a href="#4-MitM证书板块" class="headerlink" title="4.MitM证书板块"></a>4.MitM证书板块</h3><p>手动添加主机名，小白请别想了，不是很难，但没必要去手写。</p>
+<ol>
+<li><p>搜索-主要用于你觉得哪条hostname地址不对劲，用搜索功能查找修改/删除。</p>
+</li>
+<li><p>生成证书，当你需要安装证书时，只需点击一下，然后点击配置证书，跳转safari浏览器，允许，设置-通用-描述文件-安装证书-关于本机信任证书</p>
+</li>
+</ol>
+<h3 id="5-调试板块"><a href="#5-调试板块" class="headerlink" title="5.调试板块"></a>5.调试板块</h3><ol>
+<li><p>构造请求，此处点击，能看到所有利用脚本的定时任务，例如签到，比价，天气预报。例如京东每日获取cookies一次，在此处手动找到对应请求，执行一次，完成京东所有签到。</p>
+</li>
+<li><p>调试记录，收藏，略过-基本不用</p>
+</li>
+</ol>
+<h3 id="6-配置文件板块"><a href="#6-配置文件板块" class="headerlink" title="6.配置文件板块"></a>6.配置文件板块</h3><ol>
+<li><p>编辑-所有操作，最终的编辑处与体现处。</p>
+</li>
+<li><p>导入-导入本地conf-此conf也包含所有配置</p>
+</li>
+<li><p>导出-多用于备份，导出你满意的conf</p>
+</li>
+<li><p>下载-远程下载conf-此conf也包含所有配置-例如我分享过的<span class="exturl" data-url="aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1aQ3NVbEx5Zkctcw==">Quantumult X配置文件讲解上<i class="fa fa-external-link-alt"></i></span>/<span class="exturl" data-url="aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1MM3pTLTFrN00tNA==">下<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>实例-软件作者出场时给大家的模板，让大家参透。</p>
+</li>
+<li><p>还原-跟你手机恢复出厂设置一个道理。</p>
+</li>
+</ol>
+<h3 id="7-其他设置"><a href="#7-其他设置" class="headerlink" title="7.其他设置"></a>7.其他设置</h3><p>点击进去，有白话文描述，自行查看</p>
+<h3 id="8-首页板块"><a href="#8-首页板块" class="headerlink" title="8.首页板块"></a>8.首页板块</h3><p>细节操作描述不清,请看视频</p>
+]]></content>
+      <categories>
+        <category>iOS</category>
+        <category>Quantumult X</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Quantumult X</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSR+Caddy+TLS+443端口伪装，不止v2ray和Trojan才能伪装哦</title>
+    <url>/ssr-caddy-tls-443-sh.html</url>
+    <content><![CDATA[<h2 id="一，准备工作"><a href="#一，准备工作" class="headerlink" title="一，准备工作"></a>一，准备工作</h2><p>1.服务器</p>
+<p>2.域名</p>
+<p>3.静态网页模板<span class="exturl" data-url="aHR0cHM6Ly93d3cuZnJlZS1jc3MuY29tLw==">下载<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="二，开始安装"><a href="#二，开始安装" class="headerlink" title="二，开始安装"></a>二，开始安装</h2><p>Caddy<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvQ2FkZHk=">简介<i class="fa fa-external-link-alt"></i></span>一键安装脚本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget -N --no-check-certificate https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ToyoDAdoubi&#x2F;doubi&#x2F;master&#x2F;caddy_install.sh &amp;&amp; chmod +x caddy_install.sh &amp;&amp; bash caddy_install.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="三，域名解析"><a href="#三，域名解析" class="headerlink" title="三，域名解析"></a>三，域名解析</h2><p>域名后台解析到服务器IP</p>
+<h2 id="四，域名注入"><a href="#四，域名注入" class="headerlink" title="四，域名注入"></a>四，域名注入</h2><p>SSH客户端输入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;caddy</span><br></pre></td></tr></table></figure>
+
+<p>查看/usr/local/caddy目录下有没有Caddyfile</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;http:&#x2F;&#x2F;域名:80 &#123;</span><br><span class="line">redir https:&#x2F;&#x2F;域名:1234&#123;url&#125;</span><br><span class="line">&#125;</span><br><span class="line">https:&#x2F;&#x2F;域名:1234 &#123;</span><br><span class="line">gzip</span><br><span class="line">tls 邮箱</span><br><span class="line">root &#x2F;var&#x2F;www&#x2F;</span><br><span class="line">redir https:&#x2F;&#x2F;域名&#123;uri&#125; 301</span><br><span class="line">&#125;&quot; &gt; &#x2F;usr&#x2F;local&#x2F;caddy&#x2F;Caddyfile</span><br></pre></td></tr></table></figure>
+
+<p>此段代码意思，直接新建Caddyfile文件并写入“引号内信息”</p>
+<h2 id="五，静态网页模板放置"><a href="#五，静态网页模板放置" class="headerlink" title="五，静态网页模板放置"></a>五，静态网页模板放置</h2><p>1.在var/www/路径下放置网页</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sftp手动放置</span><br></pre></td></tr></table></figure>
+
+<p>2.全命令操作（推荐）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;var</span><br><span class="line"></span><br><span class="line">ls</span><br><span class="line"></span><br><span class="line">wget https:&#x2F;&#x2F;www.free-css.com&#x2F;assets&#x2F;files&#x2F;free-css-templates&#x2F;download&#x2F;page253&#x2F;estateagency.zip</span><br><span class="line"></span><br><span class="line">unzip estateagency.zip</span><br><span class="line"></span><br><span class="line">mv 解压目录 www</span><br></pre></td></tr></table></figure>
+
+<p>3.其他caddy命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">启动：service caddy start</span><br><span class="line">停止：service caddy stop</span><br><span class="line">重启：service caddy restart</span><br><span class="line">查看状态：service caddy status</span><br><span class="line">查看Caddy启动日志： tail -f &#x2F;tmp&#x2F;caddy.log</span><br><span class="line">Caddy配置文件位置：&#x2F;usr&#x2F;local&#x2F;caddy&#x2F;Caddyfile</span><br></pre></td></tr></table></figure>
+
+<p>4.测试访问，浏览器地址栏输入域名，看是否能够正常访问静态网页</p>
+<h2 id="六，SSR一键搭建脚本"><a href="#六，SSR一键搭建脚本" class="headerlink" title="六，SSR一键搭建脚本"></a>六，SSR一键搭建脚本</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate -O shadowsocks-all.sh https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;teddysun&#x2F;shadowsocks_install&#x2F;master&#x2F;shadowsocks-all.sh</span><br><span class="line">chmod +x shadowsocks-all.sh</span><br><span class="line">.&#x2F;shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log</span><br></pre></td></tr></table></figure>
+
+<p>其他ssr命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">启动SSR：</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;shadowsocks-r start</span><br><span class="line">退出SSR：</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;shadowsocks-r stop</span><br><span class="line">重启SSR：</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;shadowsocks-r restart</span><br><span class="line">SSR状态：</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;shadowsocks-r status</span><br><span class="line">卸载SSR：</span><br><span class="line">.&#x2F;shadowsocks-all.sh uninstall</span><br></pre></td></tr></table></figure>
+
+<p>更改ssr的相关配置参数，配置文件路径</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;shadowsocks-r&#x2F;config.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="七，修改配置文件"><a href="#七，修改配置文件" class="headerlink" title="七，修改配置文件"></a>七，修改配置文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;shadowsocks-r&#x2F;config.json</span><br></pre></td></tr></table></figure>
+
+<p>“server_port”: 端口改为443</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">eg:“server_port”:443,</span><br></pre></td></tr></table></figure>
+
+<p>“redirect”: [“*:443#[127.0.0.1:前面caddy用到的端口]</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">eg:&quot;redirect&quot;:[&quot;*:443#127.0.0.1:1234&quot;],</span><br></pre></td></tr></table></figure>
+
+<p>重启SSR服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;shadowsocks-r restart</span><br></pre></td></tr></table></figure>
+
+<h2 id="八，自愿安装bbr"><a href="#八，自愿安装bbr" class="headerlink" title="八，自愿安装bbr"></a>八，自愿安装bbr</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;src &amp;&amp; wget -N --no-check-certificate &quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;chiakge&#x2F;Linux-NetSpeed&#x2F;master&#x2F;tcp.sh&quot; &amp;&amp; chmod +x tcp.sh &amp;&amp; .&#x2F;tcp.sh</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>shadowsocksr</category>
+      </categories>
+      <tags>
+        <tag>shadowsocksr</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSTap真全局游戏代理软件使用教程</title>
+    <url>/sstap-global-game-proxy.html</url>
+    <content><![CDATA[<h2 id="SSTap简介"><a href="#SSTap简介" class="headerlink" title="SSTap简介"></a>SSTap简介</h2><p>作者：<strong>Changelog</strong></p>
+<ul>
+<li><p>SSTap-享受游戏! 专为游戏而生！</p>
+</li>
+<li><p>SSTap全称SOCKSTap, 是一款利用虚拟网卡技术在网络层实现的代理工具。</p>
+</li>
+<li><p>SSTap能在网络层拦截所有连接并转发给HTTP，SOCKS4，SOCKS5，SHADOWSOCKS代理。而无需对被代理的应用程序做任何修改或设置。 它能同时转发TCP, UDP数据包。 它非常适合于游戏玩家使用。</p>
+</li>
+<li><p>SSTap已于2017年11月19日停止开发及维护。</p>
+</li>
+<li><p>SSTap Latest Version: [<strong>1.1.0.1</strong>]</p>
+</li>
+</ul>
+<h2 id="SSTap官网"><a href="#SSTap官网" class="headerlink" title="SSTap官网"></a><span class="exturl" data-url="aHR0cHM6Ly93d3cuc29ja3NjYXA2NC5jb20vc3N0YXAtJUU0JUJBJUFCJUU1JThGJTk3JUU2JUI4JUI4JUU2JTg4JThGLSVFNCVCRCVCRiVFNyU5NCVBOHNzdGFwLw==">SSTap官网<i class="fa fa-external-link-alt"></i></span></h2><h2 id="视频教程"><a href="#视频教程" class="headerlink" title="视频教程"></a>视频教程</h2><div class="video-container"><iframe src="https://www.youtube.com/embed/uXUqIp-Kduk" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<h2 id="SSTap资源下载"><a href="#SSTap资源下载" class="headerlink" title="SSTap资源下载"></a>SSTap资源下载</h2><ul>
+<li>SSTap最后更新版本下载：<span class="exturl" data-url="aHR0cHM6Ly9naXQuaW8vSkp5Uk4=">https://git.io/JJyRN<i class="fa fa-external-link-alt"></i></span></li>
+<li>SSTap游戏代理规则包：<span class="exturl" data-url="aHR0cHM6Ly9naXQuaW8vSkp5MGU=">https://git.io/JJy0e<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>SSTap</category>
+        <category>游戏代理</category>
+      </categories>
+      <tags>
+        <tag>SSTap</tag>
+        <tag>游戏代理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shadowrocket解锁TikTok区域限制-免拔卡</title>
+    <url>/shadowrocket-unlock-tiktok.html</url>
+    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li>非大陆地区AppleID并已购买下载Shadowrocket，且是最新正版授权用户</li>
+<li>非大陆地区AppleID并已下载TikTok</li>
+<li>观看TikTok流量经过代理</li>
+</ol>
+<h2 id="视频教程"><a href="#视频教程" class="headerlink" title="视频教程"></a>视频教程</h2><div class="video-container"><iframe src="https://www.youtube.com/embed/68pHg6fgv84" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<h2 id="详细教程"><a href="#详细教程" class="headerlink" title="详细教程"></a>详细教程</h2><h3 id="证书安装"><a href="#证书安装" class="headerlink" title="证书安装"></a>证书安装</h3><ol>
+<li>点击Shadowrocket首页底部<strong>配置</strong></li>
+<li>选中一个配置文件，默认是<code>default.conf</code></li>
+<li>弹出窗口点击<strong>编辑配置</strong></li>
+<li><code>开启 HTTPS 解密</code> – <code>生成新的 CA证书</code> – <code>安装证书</code></li>
+</ol>
+<h3 id="信任证书"><a href="#信任证书" class="headerlink" title="信任证书"></a>信任证书</h3><ol>
+<li>打开 <code>设置</code> – <code>通用</code> – <code>关于本机</code> – <code>证书信任设置</code> </li>
+<li>找到<code>Shadowrocket开头的选项</code> – 打开右侧开关 – 弹出警告框 – `继续 - 信任证书即可</li>
+</ol>
+<h3 id="编辑配置"><a href="#编辑配置" class="headerlink" title="编辑配置"></a>编辑配置</h3><ol>
+<li><p>点击Shadowrocket首页底部<strong>配置</strong></p>
+</li>
+<li><p>选中一个配置文件，默认是<code>default.conf</code></p>
+</li>
+<li><p>弹出窗口点击<strong>编辑纯文本</strong></p>
+</li>
+<li><p>找到<code>[URL Rewrite]</code>字段，在其下方</p>
+</li>
+<li><p>复制并粘贴TikTok重写规则（URL Rewrite）代码：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="string">CN</span> <span class="string">$1KR</span> <span class="number">302</span></span><br><span class="line"><span class="string">(?&lt;=\?version_code=)16..</span> <span class="string">$11</span> <span class="number">302</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加<code>hostname</code>，滑至末尾，复制并粘贴如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hostname &#x3D; *.tiktokv.com,*.musical.ly</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="更换区域"><a href="#更换区域" class="headerlink" title="更换区域"></a>更换区域</h3><ul>
+<li>如果需要观看不同国家的TikTok视频，只需要修改[URL Rewrite]下方TikTok重写规则代码中的<code>KR</code>，将<code>KR</code>更换为其他国家的简码即可。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>iOS</category>
+        <category>Shadowrocket</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Shadowrocket</tag>
+        <tag>TikTok</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Trojan+GlobalSSH+优化线路端口加速</title>
+    <url>/trojan-globalssh-port.html</url>
+    <content><![CDATA[<p>Trojan+GlobalSSH+域名解析[Cloudflare]，延迟低稳定</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1.服务器</p>
+<p>2.域名</p>
+<p>3.Ucloud账户[需要实名]</p>
+<h2 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h2><p>将你的域名解析一条A记录指向服务器IP</p>
+<p>如图：</p>
+<img src="/images/2144089706.png" style="zoom:75%;" />
+
+<h2 id="搭建Trojan"><a href="#搭建Trojan" class="headerlink" title="搭建Trojan"></a>搭建Trojan</h2><p>atrandys大佬的首发一键脚本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -O https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;atrandys&#x2F;trojan&#x2F;master&#x2F;trojan_mult.sh &amp;&amp; chmod +x trojan_mult.sh &amp;&amp; .&#x2F;trojan_mult.sh</span><br></pre></td></tr></table></figure>
+
+<p>执行以上脚本，然后选择1，安装trojan，然后输入解析到VPS的域名，回车安装即可。</p>
+<h2 id="自愿安装bbr"><a href="#自愿安装bbr" class="headerlink" title="自愿安装bbr"></a>自愿安装bbr</h2><p>建议安装bbr，来源于网络分享。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;src &amp;&amp; wget -N --no-check-certificate &quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;chiakge&#x2F;Linux-NetSpeed&#x2F;master&#x2F;tcp.sh&quot; &amp;&amp; chmod +x tcp.sh &amp;&amp; .&#x2F;tcp.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改Trojan默认端口"><a href="#修改Trojan默认端口" class="headerlink" title="修改Trojan默认端口"></a>修改Trojan默认端口</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;src&#x2F;trojan&#x2F;server.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改server.conf的”local_port”: 443,字段即可。</p>
+<p>重启：reboot</p>
+<h2 id="利用Ucloud的全球动态加速PathX的GlobalSSH加速你的Trojan端口-最后修改的端口"><a href="#利用Ucloud的全球动态加速PathX的GlobalSSH加速你的Trojan端口-最后修改的端口" class="headerlink" title="利用Ucloud的全球动态加速PathX的GlobalSSH加速你的Trojan端口[最后修改的端口]"></a>利用Ucloud的全球动态加速PathX的GlobalSSH加速你的Trojan端口[最后修改的端口]</h2><p>进入<span class="exturl" data-url="aHR0cHM6Ly9jb25zb2xlLnVjbG91ZC5jbi91cGF0aHgvZ2xvYmFsc3No">Ucloud的控制台的全球动态加速PathX的GlobalSSH的页面<i class="fa fa-external-link-alt"></i></span></p>
+<p>点击创建</p>
+<p>如图：</p>
+<img src="/images/2144089707.png" style="zoom:75%;" />
+
+<p>确定之后创建完毕，生成一个形如：IP.ipssh.net的域名</p>
+<h2 id="再次回到域名解析"><a href="#再次回到域名解析" class="headerlink" title="再次回到域名解析"></a>再次回到域名解析</h2><p>1.删除原来的A记录</p>
+<p>2.新建CNAME记录指向IP.ipssh.net</p>
+<p>如图：</p>
+<img src="/images/2144089708.png" style="zoom:75%;" />
+
+<p>等待生效，大概半小时连通</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>填入域名，端口，密码，即可使用</p>
+]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>Trojan</category>
+        <category>一键脚本</category>
+      </categories>
+      <tags>
+        <tag>Trojan</tag>
+        <tag>一键脚本</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Trojan首发一键搭建脚本</title>
+    <url>/trojan-install-sh.html</url>
+    <content><![CDATA[<h2 id="谷歌云搭建Trojan科学上网"><a href="#谷歌云搭建Trojan科学上网" class="headerlink" title="谷歌云搭建Trojan科学上网"></a>谷歌云搭建Trojan科学上网</h2><h3 id="创建实例"><a href="#创建实例" class="headerlink" title="创建实例"></a>创建实例</h3><p>详情请跟着<span class="exturl" data-url="aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kM1hrX3ZIRVJFMA==">视频教程<i class="fa fa-external-link-alt"></i></span>做</p>
+<h3 id="SSH连接实例"><a href="#SSH连接实例" class="headerlink" title="SSH连接实例"></a>SSH连接实例</h3><h3 id="Trojan一键脚本"><a href="#Trojan一键脚本" class="headerlink" title="Trojan一键脚本"></a>Trojan一键脚本</h3><p>开启TLS1.3，系统支持centos7+/debian9+/ubuntu16+</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget -N --no-check-certificate -q -O trojan_install.sh &quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;V2RaySSR&#x2F;Trojan&#x2F;master&#x2F;trojan_install.sh&quot; &amp;&amp; chmod +x trojan_install.sh &amp;&amp; bash trojan_install.sh</span><br></pre></td></tr></table></figure>
+
+<p>以上代码执行完毕，窗口显示一串下载链接，复制以上链接到浏览器下载即可，可能需要扶墙。</p>
+<h3 id="安装bbr加速，建议锐速。"><a href="#安装bbr加速，建议锐速。" class="headerlink" title="安装bbr加速，建议锐速。"></a>安装bbr加速，建议锐速。</h3><ul>
+<li>第一次执行脚本安装锐速</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;src &amp;&amp; wget -N --no-check-certificate &quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;chiakge&#x2F;Linux-NetSpeed&#x2F;master&#x2F;tcp.sh&quot; &amp;&amp; chmod +x tcp.sh &amp;&amp; .&#x2F;tcp.sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第二次执行脚本开启锐速</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;src &amp;&amp; wget -N --no-check-certificate &quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;chiakge&#x2F;Linux-NetSpeed&#x2F;master&#x2F;tcp.sh&quot; &amp;&amp; chmod +x tcp.sh &amp;&amp; .&#x2F;tcp.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="搭建完成"><a href="#搭建完成" class="headerlink" title="搭建完成"></a>搭建完成</h3><p>愉快的使用Trojan吧！！！</p>
+<h3 id="附加"><a href="#附加" class="headerlink" title="附加"></a>附加</h3><p>trojan服务端修改密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;src&#x2F;trojan&#x2F;server.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改完成后，重启trojan服务端即可，同时客户端的密码也要同步修改</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl restart trojan</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>Trojan</category>
+        <category>一键脚本</category>
+      </categories>
+      <tags>
+        <tag>Trojan</tag>
+        <tag>一键脚本</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu部署Shadowsocks-libev及simple-obfs</title>
+    <url>/shadowsocks-libev-simple-obfs-ubuntu.html</url>
+    <content><![CDATA[<h2 id="更新源和更新软件"><a href="#更新源和更新软件" class="headerlink" title="更新源和更新软件"></a>更新源和更新软件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt upgrade</span><br></pre></td></tr></table></figure>
+
+<p>Ubuntu 14.04 和 Ubuntu 16.04 用户需新增 Shadowsocks PPA 源</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt install software-properties-common &amp;&amp; sudo add-apt-repository ppa:max-c-lv&#x2F;shadowsocks-libev &amp;&amp; sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-Shadowsocks-libev-和必要软件"><a href="#安装-Shadowsocks-libev-和必要软件" class="headerlink" title="安装 Shadowsocks-libev 和必要软件"></a>安装 Shadowsocks-libev 和必要软件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt install shadowsocks-libev git vim</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-simple-obfs"><a href="#安装-simple-obfs" class="headerlink" title="安装 simple-obfs"></a>安装 simple-obfs</h2><p>（依次运行，不需要可跳过）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;shadowsocks&#x2F;simple-obfs.git</span><br><span class="line">cd simple-obfs</span><br><span class="line">git submodule update --init --recursive</span><br><span class="line">.&#x2F;autogen.sh</span><br><span class="line">.&#x2F;configure &amp;&amp; make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo nano &#x2F;etc&#x2F;shadowsocks-libev&#x2F;config.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="填充内容到json配置文件"><a href="#填充内容到json配置文件" class="headerlink" title="填充内容到json配置文件"></a>填充内容到json配置文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;server&quot;:&quot;0.0.0.0&quot;, &#x2F;&#x2F; 改成 0.0.0.0 监听所有地址</span><br><span class="line">  &quot;server_port&quot;:8443, &#x2F;&#x2F; 自定义端口</span><br><span class="line">  &quot;local_port&quot;:1080,</span><br><span class="line">  &quot;password&quot;:&quot;FuckGFW&quot;, &#x2F;&#x2F; 自定义密码</span><br><span class="line">  &quot;timeout&quot;:60, &#x2F;&#x2F; 私用可改成 600</span><br><span class="line">  &quot;method&quot;:&quot;chacha20-ietf-poly1305&quot;, &#x2F;&#x2F; 仅推荐 AEAD 算法</span><br><span class="line">  &quot;mode&quot;:&quot;tcp_and_udp&quot;,</span><br><span class="line">  &quot;plugin&quot;:&quot;obfs-server&quot;, &#x2F;&#x2F; 此行及下一行为 obfs 配置如不需要连带上一行末尾逗号一并删除</span><br><span class="line">  &quot;plugin_opts&quot;:&quot;obfs&#x3D;tls;obfs-host&#x3D;yunjiasu-cdn.net&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>推荐使用 AEAD 算法：</p>
+<ul>
+<li>chacha20-ietf-poly1305</li>
+<li>aes-256-gcm</li>
+</ul>
+<h2 id="管理"><a href="#管理" class="headerlink" title="管理"></a>管理</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 开启服务</span><br><span class="line">sudo systemctl start shadowsocks-libev</span><br><span class="line"># 停止服务</span><br><span class="line">sudo systemctl stop shadowsocks-libev</span><br><span class="line"># 重启服务</span><br><span class="line">sudo systemctl restart shadowsocks-libev</span><br><span class="line"># 开机启动</span><br><span class="line">sudo systemctl enable shadowsocks-libev</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>shadowsocks</category>
+        <category>Linux</category>
+        <category>Ubuntu</category>
+      </categories>
+      <tags>
+        <tag>shadowsocks</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>v2ray官方教程手动搭建v2ray(kcp)+shadowsocks(原生)双节点</title>
+    <url>/v2core-v2ray-shadowsocks.html</url>
+    <content><![CDATA[<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>支持系统不限，最好使用<code>CentOS</code>；<code>Debian</code>；<code>Ubuntu</code>常见发行版</li>
+<li>请提前开放你所需要用的端口</li>
+<li>涉及到的命令出现未安装情况，自行安装</li>
+</ol>
+<h2 id="详细教程"><a href="#详细教程" class="headerlink" title="详细教程"></a>详细教程</h2><h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;v2ray&#x2F;v2ray-core&#x2F;releases&#x2F;download&#x2F;v4.27.0&#x2F;v2ray-linux-64.zip   &#x2F;&#x2F;下载v2ray最新发行包，可自行替换版本号</span><br><span class="line"></span><br><span class="line">unzip v2ray-linux-64.zip   &#x2F;&#x2F;解压</span><br><span class="line"></span><br><span class="line">cd v2ray-linux-64   &#x2F;&#x2F;根据解压目录的具体情况决定是否运行本命令</span><br><span class="line"></span><br><span class="line">ls -l   &#x2F;&#x2F;列出解压后所有文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h3><p>因为<del><code>bash &lt;(curl -L -s https://install.direct/go.sh)</code></del>脚本会自动安装以下文件：</p>
+<ul>
+<li><code>/usr/bin/v2ray/v2ray</code>：V2Ray 程序</li>
+<li><code>/usr/bin/v2ray/v2ctl</code>：V2Ray 工具</li>
+<li><code>/usr/bin/v2ray/geoip.dat</code>：IP 数据文件</li>
+<li><code>/usr/bin/v2ray/geosite.dat</code>：域名数据文件</li>
+<li><code>/etc/v2ray/config.json</code>：配置文件</li>
+</ul>
+<p>于是现在要做的就是手动将文件移动至相应位置:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;usr&#x2F;bin&#x2F;v2ray   &#x2F;&#x2F;在&#x2F;usr&#x2F;bin目录下创建v2ray文件夹</span><br><span class="line">cp v2ray &#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;v2ray</span><br><span class="line">cp v2ctl &#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;v2ctl</span><br><span class="line">cp geoip.dat &#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;geoip.dat</span><br><span class="line">cp geosite.dat &#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;geosite.dat</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>无配置不成”方圆”</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;etc&#x2F;v2ray   &#x2F;&#x2F;在&#x2F;etc目录下创建v2ray文件夹</span><br><span class="line">nano &#x2F;etc&#x2F;v2ray&#x2F;config.json</span><br></pre></td></tr></table></figure>
+
+<p>v2ray(kcp)+shadowsocks(原生)配置文件模板</p>
+<p>模板解释：</p>
+<ul>
+<li>v2ray mKCP协议</li>
+<li>alterID=32</li>
+<li>v2ray 默认端口：46231且动态端口范围40000-50000</li>
+<li>默认uuid：0084dfc8-507e-715a-e797-15fa69d84321</li>
+<li>ss 默认端口：443</li>
+<li>加密方式：chacha20-ietf-poly1305</li>
+<li>默认密码：shadowsocks</li>
+<li>udp开启</li>
+</ul>
+<p>可直接替换：</p>
+<ul>
+<li>端口号</li>
+<li>alterID</li>
+<li>UUID</li>
+<li>加密方式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;log&quot;: &#123;</span><br><span class="line">        &quot;access&quot;: &quot;&#x2F;var&#x2F;log&#x2F;v2ray&#x2F;access.log&quot;,</span><br><span class="line">        &quot;error&quot;: &quot;&#x2F;var&#x2F;log&#x2F;v2ray&#x2F;error.log&quot;,</span><br><span class="line">        &quot;loglevel&quot;: &quot;warning&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;inbound&quot;: &#123;</span><br><span class="line">        &quot;port&quot;: 46231,</span><br><span class="line">        &quot;protocol&quot;: &quot;vmess&quot;,</span><br><span class="line">        &quot;settings&quot;: &#123;</span><br><span class="line">            &quot;clients&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;id&quot;: &quot;0084dfc8-507e-715a-e797-15fa69d84321&quot;,</span><br><span class="line">                    &quot;level&quot;: 1,</span><br><span class="line">                    &quot;alterId&quot;: 32</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;streamSettings&quot;: &#123;</span><br><span class="line">            &quot;network&quot;: &quot;kcp&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;detour&quot;: &#123;</span><br><span class="line">            &quot;to&quot;: &quot;vmess-detour-151377&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;outbound&quot;: &#123;</span><br><span class="line">        &quot;protocol&quot;: &quot;freedom&quot;,</span><br><span class="line">        &quot;settings&quot;: &#123;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;inboundDetour&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;protocol&quot;: &quot;vmess&quot;,</span><br><span class="line">            &quot;port&quot;: &quot;40000-50000&quot;,</span><br><span class="line">            &quot;tag&quot;: &quot;vmess-detour-151377&quot;,</span><br><span class="line">            &quot;settings&quot;: &#123;&#125;,</span><br><span class="line">            &quot;allocate&quot;: &#123;</span><br><span class="line">                &quot;strategy&quot;: &quot;random&quot;,</span><br><span class="line">                &quot;concurrency&quot;: 5,</span><br><span class="line">                &quot;refresh&quot;: 5</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;streamSettings&quot;: &#123;</span><br><span class="line">                &quot;network&quot;: &quot;kcp&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;protocol&quot;: &quot;shadowsocks&quot;,</span><br><span class="line">            &quot;port&quot;: 443,</span><br><span class="line">            &quot;settings&quot;: &#123;</span><br><span class="line">                &quot;method&quot;: &quot;chacha20-ietf-poly1305&quot;,</span><br><span class="line">                &quot;password&quot;: &quot;shadowsocks&quot;,</span><br><span class="line">                &quot;udp&quot;: true,</span><br><span class="line">                &quot;level&quot;: 1</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;outboundDetour&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;protocol&quot;: &quot;blackhole&quot;,</span><br><span class="line">            &quot;settings&quot;: &#123;&#125;,</span><br><span class="line">            &quot;tag&quot;: &quot;blocked&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;routing&quot;: &#123;</span><br><span class="line">        &quot;strategy&quot;: &quot;rules&quot;,</span><br><span class="line">        &quot;settings&quot;: &#123;</span><br><span class="line">            &quot;rules&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;field&quot;,</span><br><span class="line">                    &quot;ip&quot;: [</span><br><span class="line">                        &quot;0.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;10.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;100.64.0.0&#x2F;10&quot;,</span><br><span class="line">                        &quot;127.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;169.254.0.0&#x2F;16&quot;,</span><br><span class="line">                        &quot;172.16.0.0&#x2F;12&quot;,</span><br><span class="line">                        &quot;192.0.0.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;192.0.2.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;192.168.0.0&#x2F;16&quot;,</span><br><span class="line">                        &quot;198.18.0.0&#x2F;15&quot;,</span><br><span class="line">                        &quot;198.51.100.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;203.0.113.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;::1&#x2F;128&quot;,</span><br><span class="line">                        &quot;fc00::&#x2F;7&quot;,</span><br><span class="line">                        &quot;fe80::&#x2F;10&quot;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;outboundTag&quot;: &quot;blocked&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="v2ray服务主程序"><a href="#v2ray服务主程序" class="headerlink" title="v2ray服务主程序"></a>v2ray服务主程序</h3><p>将v2ray.service文件移动到/usr/lib/systemd/system目录,生成V2Ray服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system   &#x2F;&#x2F;在&#x2F;usr&#x2F;lib&#x2F;systemd目录下创建system文件夹</span><br><span class="line">cp .&#x2F;systemd&#x2F;v2ray.service &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system</span><br></pre></td></tr></table></figure>
+
+<h3 id="日志文件"><a href="#日志文件" class="headerlink" title="日志文件"></a>日志文件</h3><p>手动创建一些文件,用于V2Ray程序运行时使用</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;var&#x2F;log&#x2F;v2ray   &#x2F;&#x2F;在&#x2F;var&#x2F;log目录下创建v2ray文件夹</span><br><span class="line">touch &#x2F;var&#x2F;log&#x2F;v2ray&#x2F;access.log</span><br><span class="line">touch &#x2F;var&#x2F;log&#x2F;v2ray&#x2F;error.log</span><br><span class="line">touch &#x2F;var&#x2F;run&#x2F;v2ray.pid</span><br></pre></td></tr></table></figure>
+
+<h3 id="随系统自启"><a href="#随系统自启" class="headerlink" title="随系统自启"></a>随系统自启</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable v2ray</span><br></pre></td></tr></table></figure>
+
+<h3 id="管理命令"><a href="#管理命令" class="headerlink" title="管理命令"></a>管理命令</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start v2ray</span><br><span class="line">systemctl stop v2ray</span><br><span class="line">systemctl status v2ray</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>shadowsocks</category>
+        <category>Linux</category>
+        <category>v2ray</category>
+      </categories>
+      <tags>
+        <tag>shadowsocks</tag>
+        <tag>v2ray</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>v2ray最新、无状态、轻量级的传输协议。VLESS+ws+tls一键脚本</title>
+    <url>/v2fly-vless+ws+tls.html</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ol>
+<li>VMESS是v2ray的传输协议。但是在5月v2ray爆出危险新闻之后，随之v2ray官方业务转型v2fly，诞生VLESS协议。</li>
+<li>VLESS是一个无状态的轻量传输协议，它分为入站和出站两部分，可以作为 v2ray客户端和服务器之间的桥梁。VLESS 不依赖于系统时间，认证方式同样为 UUID，但不需要 alterID。</li>
+<li>今天为大家带来的是一键安装VLESS+ws+tls的脚本，很简单。</li>
+</ol>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li>VPS一台，重置主流版本的操作系统</li>
+<li>域名一个，做好解析，同v2ray一个道理</li>
+</ol>
+<h2 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h2><ol>
+<li><p>此脚本需要GIT环境用于拉取伪装网站源文件，不懂GIT的执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install -y git  #CentOS安装命令</span><br><span class="line">apt install -y git  #Debian&#x2F;Ubuntu安装命令</span><br></pre></td></tr></table></figure>
+
+<p>懂的你怎么开心怎么来</p>
+</li>
+<li><p>一键脚本如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget -N --no-check-certificate -q -O install.sh &quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;wulabing&#x2F;V2Ray_ws-tls_bash_onekey&#x2F;master&#x2F;install.sh&quot; &amp;&amp; chmod +x install.sh &amp;&amp; bash install.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问你绑定的域名即可看到网站！！！</p>
+</li>
+</ol>
+<h2 id="VLESS支持的客户端"><a href="#VLESS支持的客户端" class="headerlink" title="VLESS支持的客户端"></a>VLESS支持的客户端</h2><p>（截止到2020年8月15日）</p>
+<h3 id="图形客户端"><a href="#图形客户端" class="headerlink" title="图形客户端"></a>图形客户端</h3><h4 id="v2RayNG"><a href="#v2RayNG" class="headerlink" title="v2RayNG"></a><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLzJkdXN0L3YycmF5Tkc=">v2RayNG<i class="fa fa-external-link-alt"></i></span></h4><ul>
+<li>V2RayNG 是一个基于 V2Ray 内核的 Android 应用，它可以创建基于 VMess 的 VPN 连接。</li>
+</ul>
+<h4 id="v2rayN"><a href="#v2rayN" class="headerlink" title="v2rayN"></a><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLzJkdXN0L3YycmF5Tg==">v2rayN<i class="fa fa-external-link-alt"></i></span></h4><ul>
+<li>V2RayN 是一个基于 V2Ray 内核的 Windows 客户端。</li>
+</ul>
+<h4 id="v2rayU"><a href="#v2rayU" class="headerlink" title="v2rayU"></a><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3lhbnVlL1YycmF5VQ==">v2rayU<i class="fa fa-external-link-alt"></i></span></h4><ul>
+<li>V2rayU，基于 V2Ray 核心的 macOS 客户端，使用 Swift 4.2 编写，支持 VMess、Shadowsocks、SOCKS5 等服务协议，支持订阅，支持二维码、剪贴板导入、手动配置、二维码分享等。</li>
+</ul>
+<h4 id="Qv2ray"><a href="#Qv2ray" class="headerlink" title="Qv2ray"></a><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1F2MnJheS9RdjJyYXk=">Qv2ray<i class="fa fa-external-link-alt"></i></span></h4><ul>
+<li>跨平台 V2Ray 客户端，支持 Linux、Windows、macOS，可通过插件系统支持 SSR / Trojan / Trojan-Go / NaiveProxy 等协议，不支持批量测速，不支持自动更新，不建议小白使用</li>
+</ul>
+<h3 id="支持VLESS软路由插件"><a href="#支持VLESS软路由插件" class="headerlink" title="支持VLESS软路由插件"></a>支持VLESS软路由插件</h3><p>（截止到2020年8月15日）</p>
+<h4 id="PassWall"><a href="#PassWall" class="headerlink" title="PassWall"></a><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3hpYW9yb3VqaS9vcGVud3J0LXBhY2thZ2U=">PassWall<i class="fa fa-external-link-alt"></i></span></h4><ul>
+<li>PassWall（v3.9.35+），支持 OpenWRT</li>
+</ul>
+]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>v2ray</category>
+        <category>一键脚本</category>
+        <category>v2fly</category>
+      </categories>
+      <tags>
+        <tag>一键脚本</tag>
+        <tag>v2ray</tag>
+        <tag>v2fly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用snap工具手动搭建shadowsocks-libev</title>
+    <url>/shadowsocks-libev-snap.html</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>适用于Debian9+系统，官方推荐快速安装方式，简单高效，不用担心后门脚本捣乱，纯手动搭建。</p>
+<h2 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装snap工具"><a href="#安装snap工具" class="headerlink" title="安装snap工具"></a>安装snap工具</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt install snapd</span><br><span class="line">sudo snap install core</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用snap工具安装ss-libev"><a href="#使用snap工具安装ss-libev" class="headerlink" title="使用snap工具安装ss-libev"></a>使用snap工具安装ss-libev</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo snap install shadowsocks-libev</span><br></pre></td></tr></table></figure>
+
+<h2 id="进入snap-bin目录"><a href="#进入snap-bin目录" class="headerlink" title="进入snap/bin目录"></a>进入snap/bin目录</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;snap&#x2F;bin</span><br></pre></td></tr></table></figure>
+
+<h2 id="编辑json配置文件"><a href="#编辑json配置文件" class="headerlink" title="编辑json配置文件"></a>编辑json配置文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nano config.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="填充如下内容"><a href="#填充如下内容" class="headerlink" title="填充如下内容"></a>填充如下内容</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;server&quot;:&quot;0.0.0.0&quot;,</span><br><span class="line">    &quot;nameserver&quot;: &quot;8.8.8.8&quot;,</span><br><span class="line">    &quot;server_port&quot;:443,</span><br><span class="line">    &quot;local_port&quot;:1080,</span><br><span class="line">    &quot;password&quot;:&quot;password&quot;,</span><br><span class="line">    &quot;timeout&quot;:600,</span><br><span class="line">    &quot;no_delay&quot;:true,</span><br><span class="line">    &quot;fast_open&quot;:true,</span><br><span class="line">    &quot;reuse_port&quot;:true,</span><br><span class="line">    &quot;method&quot;:&quot;chacha20-ietf-poly1305&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="以守护程序运行"><a href="#以守护程序运行" class="headerlink" title="以守护程序运行"></a>以守护程序运行</h2><p>ps：以守护程序运行，执行一次开启命令，只要不重启服务器，一直保持运行，重启服务器需要再次执行以下命令。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;snap&#x2F;bin&#x2F;shadowsocks-libev.ss-server -c &#x2F;snap&#x2F;bin&#x2F;config.json -f &#x2F;snap&#x2F;bin&#x2F;ss-server-pid</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>shadowsocks</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>shadowsocks</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用OpenVPN实现UDP53,67,68端口绕过校园网认证上网</title>
+    <url>/openvpn-udp-campus-network-cert.html</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>绕过校园网认证的办法其实很早之前就有。各种参差不齐，大二换新校区，那个校园网个坑啊。有钱有有钱的办法，没钱有没钱的办法。</p>
+<h2 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a><strong>原理分析</strong></h2>]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>OpenVPN</category>
+        <category>认证上网</category>
+      </categories>
+      <tags>
+        <tag>OpenVPN</tag>
+        <tag>认证上网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最简单的v2ray一键脚本</title>
+    <url>/v2ray-233boy-sh.html</url>
+    <content><![CDATA[<h3 id="视频教程"><a href="#视频教程" class="headerlink" title="视频教程"></a><span class="exturl" data-url="aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1hb01pcXludTNmVQ==">视频教程<i class="fa fa-external-link-alt"></i></span></h3><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><h5 id="1、服务器"><a href="#1、服务器" class="headerlink" title="1、服务器"></a>1、服务器</h5><h5 id="2、域名"><a href="#2、域名" class="headerlink" title="2、域名"></a>2、域名</h5><h3 id="安装流程"><a href="#安装流程" class="headerlink" title="安装流程"></a>安装流程</h3><h5 id="1、解析域名到服务器IP"><a href="#1、解析域名到服务器IP" class="headerlink" title="1、解析域名到服务器IP"></a>1、解析域名到服务器IP</h5><h5 id="2、ssh终端执行一键代码"><a href="#2、ssh终端执行一键代码" class="headerlink" title="2、ssh终端执行一键代码"></a>2、ssh终端执行一键代码</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bash &lt;(curl -s -L https:&#x2F;&#x2F;git.io&#x2F;v2ray.sh) </span><br></pre></td></tr></table></figure>
+
+<h5 id="3、终端填入解析好的域名，按步骤继续"><a href="#3、终端填入解析好的域名，按步骤继续" class="headerlink" title="3、终端填入解析好的域名，按步骤继续"></a>3、终端填入解析好的域名，按步骤继续</h5><h5 id="4、安装完成之后，检验域名能否访问伪装站，在浏览器地址栏输入域名查看是否有伪装站"><a href="#4、安装完成之后，检验域名能否访问伪装站，在浏览器地址栏输入域名查看是否有伪装站" class="headerlink" title="4、安装完成之后，检验域名能否访问伪装站，在浏览器地址栏输入域名查看是否有伪装站"></a>4、安装完成之后，检验域名能否访问伪装站，在浏览器地址栏输入域名查看是否有伪装站</h5><h5 id="5、Cadddy管理命令（同4检查作用）"><a href="#5、Cadddy管理命令（同4检查作用）" class="headerlink" title="5、Cadddy管理命令（同4检查作用）"></a>5、Cadddy管理命令（同4检查作用）</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看状态：service caddy status</span><br></pre></td></tr></table></figure>
+
+<h3 id="自愿安装BBR"><a href="#自愿安装BBR" class="headerlink" title="自愿安装BBR"></a>自愿安装BBR</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/src &amp;&amp; wget -N --no-check-certificate &quot;https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh&quot; &amp;&amp; chmod +x tcp.sh &amp;&amp; ./tcp.sh</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>v2ray</category>
+        <category>一键脚本</category>
+      </categories>
+      <tags>
+        <tag>一键脚本</tag>
+        <tag>v2ray</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>秋水SSR一键脚本使用教程+BBR加速</title>
+    <url>/shadowsocksr-qiushui-sh.html</url>
+    <content><![CDATA[<h2 id="获得root权限"><a href="#获得root权限" class="headerlink" title="获得root权限"></a>获得root权限</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -i</span><br></pre></td></tr></table></figure>
+
+<h2 id="秋水大神的一键脚本进行ssr的安装"><a href="#秋水大神的一键脚本进行ssr的安装" class="headerlink" title="秋水大神的一键脚本进行ssr的安装"></a>秋水大神的一键脚本进行ssr的安装</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate -O shadowsocks-all.sh https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;teddysun&#x2F;shadowsocks_install&#x2F;master&#x2F;shadowsocks-all.sh</span><br><span class="line">chmod +x shadowsocks-all.sh</span><br><span class="line">.&#x2F;shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>执行以上脚本</li>
+<li>选择第二个选项</li>
+<li>输入任意密码</li>
+<li>输入端口号：必须<code>0-65535</code>之间</li>
+<li>选择<strong>加密</strong>方式：<code>11</code></li>
+<li>选择<strong>协议protocol</strong>：<code>3</code></li>
+<li>选择混淆<strong>obfs</strong>：<code>8</code></li>
+<li>回车键开始安装</li>
+<li>当屏幕上打印出<strong>节点信息</strong>后，表示安装完成。注意：请记下配置信息，以便客户端配置时使用。</li>
+</ol>
+<h2 id="一键安装bbr"><a href="#一键安装bbr" class="headerlink" title="一键安装bbr"></a>一键安装bbr</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget &quot;https:&#x2F;&#x2F;github.com&#x2F;chiakge&#x2F;Linux-NetSpeed&#x2F;raw&#x2F;master&#x2F;tcp.sh&quot; &amp;&amp; chmod +x tcp.sh &amp;&amp; .&#x2F;tcp.sh</span><br></pre></td></tr></table></figure>
+
+<p>bbr版本自由选择，一般选择：<code>BBRplus</code>，安装完成后，恭喜你，搭建完成。</p>
+]]></content>
+      <categories>
+        <category>科学上网</category>
+        <category>shadowsocksr</category>
+      </categories>
+      <tags>
+        <tag>shadowsocksr</tag>
+      </tags>
+  </entry>
+</search>
